@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RAS 활동 기록장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: poster-style single column — teal-framed sheet on a peach ground, R/A/S colour coding throughout. Deliberately one bright poster look. */
+:root {
+  --ground: #fde9cf;
+  --sheet: #fffdf8;
+  --ink: #2c3440;
+  --muted: #6b7380;
+  --line: #e7dccb;
+  --teal: #1f8f9c;
+  --teal-dk: #156d77;
+  --r: #2a8fd8;  --r-bg: #dcefff;
+  --a: #ec5a4c;  --a-bg: #ffe2dc;
+  --s: #3aa65a;  --s-bg: #dcf2e1;
+  --gold: #f4b63f;
+  --display: "Jua", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+h1, h2, h3, .disp { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* ---------- Header ---------- */
+.top { text-align: center; display: grid; gap: 6px; justify-items: center; }
+.phone { display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 1.1rem; color: var(--muted); }
+.tog { display: inline-flex; align-items: center; gap: 4px; border-radius: 99px; padding: 2px 8px 2px 2px; font-size: .78rem; color: #fff; font-family: var(--display); }
+.tog i { width: 18px; height: 18px; border-radius: 50%; background: #fff; display: block; }
+.tog.off { background: var(--a); }
+.tog.on { background: var(--s); flex-direction: row-reverse; padding: 2px 2px 2px 8px; }
+.logo { display: flex; align-items: center; gap: 14px; }
+.logo .l { font-family: var(--display); font-size: clamp(3.4rem, 14vw, 5rem); line-height: 1; letter-spacing: .02em; }
+.logo .l b { font-weight: 400; display: inline-block; text-shadow: 3px 3px 0 rgba(44,52,64,.12); }
+.logo .l b:nth-child(1) { color: var(--r); transform: rotate(-4deg); }
+.logo .l b:nth-child(2) { color: var(--a); }
+.logo .l b:nth-child(3) { color: var(--s); transform: rotate(4deg); }
+.banner { background: var(--teal); color: #fff; font-family: var(--display); border-radius: 10px; padding: 6px 16px; font-size: .95rem; margin-top: 6px; }
+
+/* ---------- Sheet ---------- */
+.sheet { background: var(--sheet); border: 3px solid var(--teal); border-radius: 22px; padding: 22px 18px; margin-top: 16px; }
+.hello { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hello .who { font-family: var(--display); font-size: 1.25rem; }
+.hello .who small { font-family: var(--body); color: var(--muted); font-size: .85rem; margin-left: 6px; }
+.ghost { background: none; border: 1.5px solid var(--line); border-radius: 99px; padding: 4px 12px; font-size: .85rem; color: var(--muted); }
+.ghost:hover { border-color: var(--teal); color: var(--teal-dk); }
+
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0 20px; }
+.tab { border: 2px solid var(--line); background: #fff; border-radius: 14px; padding: 10px 6px; font-family: var(--display); font-size: 1.05rem; color: var(--muted); }
+.tab[aria-selected="true"] { background: var(--teal); border-color: var(--teal); color: #fff; }
+
+.note { background: #fff6e0; border: 1.5px dashed var(--gold); border-radius: 12px; padding: 8px 12px; font-size: .85rem; color: #7a5a12; margin-bottom: 14px; }
+
+/* ---------- Forms ---------- */
+label.f { display: grid; gap: 4px; font-size: .9rem; color: var(--muted); }
+.in { width: 100%; border: 2px solid var(--line); background: #fff; border-radius: 12px; padding: 10px 12px; font-size: 1rem; color: var(--ink); }
+.in:focus { border-color: var(--teal); outline: none; }
+textarea.in { resize: vertical; min-height: 78px; }
+.row { display: grid; gap: 12px; }
+.row.c4 { grid-template-columns: repeat(3, 1fr); }
+.row.c2 { grid-template-columns: 1fr 1fr; }
+@media (max-width: 460px) { .row.c2 { grid-template-columns: 1fr; } }
+.cta { background: var(--teal); color: #fff; border: 0; border-radius: 14px; padding: 13px; font-family: var(--display); font-size: 1.15rem; width: 100%; box-shadow: 0 4px 0 var(--teal-dk); }
+.cta:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--teal-dk); }
+.cta:disabled { opacity: .5; cursor: default; }
+.err { color: var(--a); font-size: .9rem; min-height: 1.3em; }
+.ok { color: var(--s); }
+
+/* Area picker cards (poster's three panels) */
+.areas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.area { border: 2.5px solid transparent; border-radius: 16px; padding: 12px 8px 10px; text-align: center; display: grid; gap: 2px; justify-items: center; }
+.area .big { font-family: var(--display); font-size: 2.2rem; line-height: 1; }
+.area .en { font-size: .78rem; letter-spacing: .06em; }
+.area .ko { font-family: var(--display); font-size: 1.05rem; }
+.area.R { background: var(--r-bg); color: var(--r); }
+.area.A { background: var(--a-bg); color: var(--a); }
+.area.S { background: var(--s-bg); color: var(--s); }
+.area[aria-pressed="true"].R { border-color: var(--r); box-shadow: 0 4px 0 var(--r); }
+.area[aria-pressed="true"].A { border-color: var(--a); box-shadow: 0 4px 0 var(--a); }
+.area[aria-pressed="true"].S { border-color: var(--s); box-shadow: 0 4px 0 var(--s); }
+.area .hint { font-size: .72rem; color: var(--muted); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 2px solid var(--line); background: #fff; border-radius: 99px; padding: 6px 14px; font-size: .92rem; }
+.chip[aria-pressed="true"] { border-color: var(--teal); background: #e3f4f5; color: var(--teal-dk); font-weight: 700; }
+.mood .chip { font-size: 1.3rem; padding: 4px 10px; line-height: 1.2; }
+.lbl { font-size: .9rem; color: var(--muted); margin-bottom: 6px; display: block; }
+.stack { display: grid; gap: 16px; }
+
+/* ---------- Record list ---------- */
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.list { display: grid; gap: 10px; }
+.rec { display: grid; grid-template-columns: 46px 1fr; gap: 12px; border: 1.5px solid var(--line); border-radius: 16px; padding: 12px; background: #fff; }
+.badge { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-family: var(--display); font-size: 1.6rem; color: #fff; }
+.badge.R { background: var(--r); } .badge.A { background: var(--a); } .badge.S { background: var(--s); }
+.rec .meta { font-size: .8rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.rec .act { font-family: var(--display); font-size: 1.08rem; margin: 2px 0; overflow-wrap: anywhere; }
+.rec .feel { font-size: .92rem; overflow-wrap: anywhere; }
+.rec .body { min-width: 0; }
+.rec .tools { display: flex; gap: 6px; justify-content: flex-end; margin-top: 6px; }
+.rec .tools button { background: none; border: 0; color: var(--muted); font-size: .8rem; text-decoration: underline; }
+.rec .tools .yes { color: var(--a); font-weight: 700; }
+.empty { text-align: center; padding: 28px 12px; color: var(--muted); border: 2px dashed var(--line); border-radius: 16px; }
+.empty .disp { font-size: 1.2rem; color: var(--ink); margin-bottom: 4px; }
+
+/* ---------- Analysis ---------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat { background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 12px; text-align: center; }
+.stat .n { font-family: var(--display); font-size: 1.9rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat .t { font-size: .8rem; color: var(--muted); }
+.sec { margin-top: 24px; }
+.sec h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--teal-dk); }
+.bars { display: grid; gap: 10px; }
+.bar { display: grid; grid-template-columns: 72px 1fr 40px; gap: 10px; align-items: center; font-size: .9rem; }
+.bar .track { height: 18px; background: #f2ece2; border-radius: 99px; overflow: hidden; }
+.bar .fill { height: 100%; border-radius: 99px; transition: width .5s; }
+.bar .v { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--display); }
+.msg { background: #e3f4f5; border-radius: 14px; padding: 12px 14px; font-size: .95rem; margin-top: 12px; }
+.msg b { font-family: var(--display); font-weight: 400; color: var(--teal-dk); }
+
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal .h { text-align: center; font-size: .75rem; color: var(--muted); }
+.cal .d { aspect-ratio: 1; max-width: 100%; border-radius: 8px; background: #f5efe5; display: grid; place-items: center; font-size: .75rem; color: var(--muted); position: relative; font-variant-numeric: tabular-nums; }
+.cal .d.has { color: #fff; font-weight: 700; }
+.cal .d.today { outline: 2px solid var(--teal); }
+.cal .d .dots { position: absolute; bottom: 3px; display: flex; gap: 2px; }
+.cal .d .dots i { width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+.calhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.calhead button { background: #fff; border: 1.5px solid var(--line); border-radius: 10px; width: 34px; height: 30px; }
+
+/* Growth ladder */
+.ladder { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.step { text-align: center; padding: 10px 4px; border-radius: 14px; background: #f5efe5; color: var(--muted); font-size: .78rem; display: grid; gap: 2px; }
+.step .ic { font-size: 1.6rem; filter: grayscale(1); opacity: .45; }
+.step .nm { font-family: var(--display); font-size: .95rem; }
+.step.done { background: #fff4d6; color: var(--ink); }
+.step.done .ic { filter: none; opacity: 1; }
+.step.now { outline: 2.5px solid var(--gold); }
+.next { margin-top: 10px; font-size: .9rem; }
+.req { display: grid; gap: 6px; margin-top: 8px; }
+.req div { display: flex; gap: 8px; align-items: center; font-size: .88rem; }
+.req .ck { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--line); display: grid; place-items: center; font-size: .75rem; flex: none; }
+.req .ck.y { background: var(--s); border-color: var(--s); color: #fff; }
+
+.medals { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.medal { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px; text-align: center; background: #fff; font-size: .78rem; color: var(--muted); }
+.medal .ic { font-size: 1.6rem; filter: grayscale(1); opacity: .4; }
+.medal .nm { font-family: var(--display); font-size: .95rem; color: var(--muted); }
+.medal.got { border-color: var(--gold); background: #fffaf0; }
+.medal.got .ic { filter: none; opacity: 1; }
+.medal.got .nm { color: var(--ink); }
+
+/* Certificate */
+.cert { margin-top: 12px; border: 6px double var(--gold); border-radius: 18px; background: #fffaf0; padding: 22px 18px; text-align: center; display: grid; gap: 8px; }
+.cert .k { font-size: .8rem; letter-spacing: .3em; color: var(--muted); }
+.cert h2 { font-size: 1.8rem; }
+.cert .lv { font-family: var(--display); font-size: 1.3rem; color: var(--teal-dk); }
+.cert p { margin: 0; font-size: .95rem; }
+.cert .sig { font-size: .85rem; color: var(--muted); }
+.cert .rl { display: flex; justify-content: center; gap: 4px; font-family: var(--display); font-size: 1.5rem; }
+.cert .rl span:nth-child(1){color:var(--r)} .cert .rl span:nth-child(2){color:var(--a)} .cert .rl span:nth-child(3){color:var(--s)}
+
+/* Login intro panels */
+.intro { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+.intro .area { cursor: default; }
+.foot { text-align: center; margin-top: 18px; font-family: var(--display); color: var(--muted); }
+.foot b { font-weight: 400; color: var(--r); } .foot b+b { color: var(--a); } .foot b+b+b { color: var(--s); }
+/* Teacher dashboard */
+.wrap.wide { max-width: 1000px; }
+.tbar { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; margin: 14px 0 6px; }
+.tbar label.f { width: 90px; }
+.tbar .cta { width: auto; padding: 10px 18px; font-size: 1rem; }
+.stats.c4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 560px) { .stats.c4 { grid-template-columns: repeat(2, 1fr); } }
+.lvcount { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.lvcount .step .cnt { font-family: var(--display); font-size: 1.3rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.quiet { display: flex; flex-wrap: wrap; gap: 6px; }
+.quiet span { background: var(--a-bg); color: #a3352a; border-radius: 99px; padding: 3px 10px; font-size: .85rem; }
+.tscroll { overflow-x: auto; border: 1.5px solid var(--line); border-radius: 14px; background: #fff; }
+table.cls { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 620px; }
+table.cls th { font-weight: 400; font-family: var(--display); color: var(--muted); text-align: center; padding: 10px 6px; border-bottom: 2px solid var(--line); background: #faf6ef; }
+table.cls td { text-align: center; padding: 9px 6px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+table.cls td.nm { text-align: left; font-family: var(--display); font-size: 1rem; }
+table.cls tbody tr { cursor: pointer; }
+table.cls tbody tr:hover, table.cls tbody tr.sel { background: #e3f4f5; }
+table.cls .mini { display: inline-flex; height: 10px; width: 80px; border-radius: 99px; overflow: hidden; background: #f2ece2; vertical-align: middle; }
+table.cls .mini i { display: block; height: 100%; }
+.old { color: var(--a); }
+.tdetail { margin-top: 14px; border: 2px solid var(--teal); border-radius: 16px; padding: 14px; background: #fff; }
+.tdetail .hd { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.tlink { background: none; border: 0; color: var(--teal-dk); text-decoration: underline; font-size: .9rem; padding: 0; }
+.sorts { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 99px; font-size: .95rem; z-index: 9; }
+@media (max-width: 420px) {
+  .areas .hint { display: none; }
+  .ladder .step { font-size: .7rem; }
+  .bar { grid-template-columns: 60px 1fr 34px; }
+}
+@media (prefers-reduced-motion: reduce) { .bar .fill { transition: none; } }
+[hidden]{display:none!important}
+body{margin:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="phone">스마트폰을 잠시 내려놓고 · Phone <span class="tog off"><i></i>OFF</span></div>
+    <div class="logo"><div class="l" aria-label="RAS"><b>R</b><b>A</b><b>S</b></div><span class="tog on" style="font-size:1rem;padding:4px 4px 4px 12px"><i style="width:24px;height:24px"></i>ON</span></div>
+    <div class="banner">독서 · 예술 · 스포츠로 신나는 학교 생활 기록장</div>
+  </header>
+
+  <main class="sheet">
+    <!-- LOGIN -->
+    <section id="login">
+      <h2 style="text-align:center;font-size:1.5rem;margin-bottom:6px">나의 RAS 기록장 열기</h2>
+      <p style="text-align:center;color:var(--muted);margin:0 0 16px">학년, 반, 번호, 이름을 쓰면 내 기록이 계속 쌓여요.</p>
+      <div class="intro" aria-hidden="true">
+        <div class="area R"><span class="big">R</span><span class="en">Reading</span><span class="ko">독서</span></div>
+        <div class="area A"><span class="big">A</span><span class="en">Art</span><span class="ko">예술문화</span></div>
+        <div class="area S"><span class="big">S</span><span class="en">Sports</span><span class="ko">스포츠</span></div>
+      </div>
+      <form id="loginForm" class="stack" autocomplete="off">
+        <div class="row c4">
+          <label class="f">학년<input class="in" id="lgGrade" type="number" min="1" max="6" inputmode="numeric" required placeholder="3"></label>
+          <label class="f">반<input class="in" id="lgClass" type="number" min="1" max="30" inputmode="numeric" required placeholder="2"></label>
+          <label class="f">번호<input class="in" id="lgNum" type="number" min="1" max="60" inputmode="numeric" required placeholder="12"></label>
+        </div>
+        <label class="f">이름<input class="in" id="lgName" type="text" maxlength="20" required placeholder="홍길동"></label>
+        <label class="f">비밀번호<input class="in" id="lgPw" type="password" inputmode="numeric" maxlength="20" required placeholder="숫자 4자리 이상"></label>
+        <p style="margin:-6px 0 0;font-size:.82rem;color:var(--muted)">처음 들어올 때 쓴 비밀번호가 내 비밀번호가 돼요. 잊어버리면 선생님께 말씀드려요.</p>
+        <div class="err" id="lgErr" role="alert"></div>
+        <button class="cta" id="lgBtn" type="submit">들어가기</button>
+      </form>
+      <p style="text-align:center;margin:14px 0 0" id="teacherEntry"><button class="tlink" type="button" id="toTeacher">선생님 대시보드로 가기 →</button></p>
+    </section>
+
+    <!-- TEACHER -->
+    <section id="teacher" hidden>
+      <div class="hello">
+        <h2 style="font-size:1.4rem">선생님 대시보드</h2>
+        <button class="ghost" id="tBack" type="button">학생 화면으로</button>
+      </div>
+      <form id="tLock" class="stack" style="max-width:320px;margin:24px auto 8px;text-align:center" autocomplete="off">
+        <p style="margin:0;color:var(--muted)">선생님 비밀번호를 입력해 주세요.</p>
+        <input class="in" id="tPw" type="password" inputmode="numeric" maxlength="20" aria-label="선생님 비밀번호" style="text-align:center;font-size:1.3rem;letter-spacing:.3em">
+        <div class="err" id="tPwErr" role="alert"></div>
+        <button class="cta" type="submit">들어가기</button>
+      </form>
+      <div id="tMain" hidden>
+      <form class="tbar" id="tForm">
+        <label class="f">학년<input class="in" id="tGrade" type="number" min="1" max="6" inputmode="numeric" required></label>
+        <label class="f">반<input class="in" id="tClass" type="number" min="1" max="30" inputmode="numeric" required></label>
+        <button class="cta" type="submit">반 불러오기</button>
+      </form>
+      <div id="tBody"><div class="empty" style="margin-top:12px"><div class="disp">학년과 반을 고르면 반 전체 기록이 보여요</div>학생들이 기록을 남기면 여기에 바로바로 반영돼요.</div></div>
+      </div>
+    </section>
+
+    <!-- APP -->
+    <section id="app" hidden>
+      <div class="hello">
+        <div class="who" id="who"></div>
+        <span style="display:flex;gap:6px;flex-wrap:wrap"><button class="ghost" id="logout" type="button">다른 친구로 바꾸기</button></span>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" data-tab="write" aria-selected="true" id="tab-write">기록하기</button>
+        <button class="tab" role="tab" data-tab="list" aria-selected="false" id="tab-list">내 기록</button>
+        <button class="tab" role="tab" data-tab="grow" aria-selected="false" id="tab-grow">성장 분석</button>
+      </div>
+
+      <!-- WRITE -->
+      <div id="pane-write" class="stack">
+        <label class="f">날짜<input class="in" id="wDate" type="date" required></label>
+        <div>
+          <span class="lbl">어떤 활동을 했나요?</span>
+          <div class="areas" id="wArea">
+            <button type="button" class="area R" data-v="R" aria-pressed="false"><span class="big">R</span><span class="ko">독서</span><span class="hint">책을 읽고 생각을 나눠요</span></button>
+            <button type="button" class="area A" data-v="A" aria-pressed="false"><span class="big">A</span><span class="ko">예술문화</span><span class="hint">그리고 만들고 연주해요</span></button>
+            <button type="button" class="area S" data-v="S" aria-pressed="false"><span class="big">S</span><span class="ko">스포츠</span><span class="hint">뛰고 놀며 건강해져요</span></button>
+          </div>
+        </div>
+        <div>
+          <span class="lbl">언제 했나요?</span>
+          <div class="chips" id="wSlot">
+            <button type="button" class="chip" data-v="break" aria-pressed="false">쉬는 시간</button>
+            <button type="button" class="chip" data-v="kicle" aria-pressed="false">키클 타임</button>
+            <button type="button" class="chip" data-v="lunch" aria-pressed="false">점심 시간</button>
+            <button type="button" class="chip" data-v="etc" aria-pressed="false">그 밖에</button>
+          </div>
+        </div>
+        <label class="f">무엇을 했나요?<input class="in" id="wAct" type="text" maxlength="60" placeholder="예) 『마당을 나온 암탉』 3장 읽기"></label>
+        <label class="f">하고 나서 어떤 생각이 들었나요?<textarea class="in" id="wFeel" maxlength="300" placeholder="예) 잎싹이 용감해서 나도 새로운 일에 도전해 보고 싶어졌다."></textarea></label>
+        <div>
+          <span class="lbl">오늘 기분은?</span>
+          <div class="chips mood" id="wMood">
+            <button type="button" class="chip" data-v="5" aria-pressed="false" aria-label="아주 좋아요">😆</button>
+            <button type="button" class="chip" data-v="4" aria-pressed="false" aria-label="좋아요">🙂</button>
+            <button type="button" class="chip" data-v="3" aria-pressed="false" aria-label="보통이에요">😐</button>
+            <button type="button" class="chip" data-v="2" aria-pressed="false" aria-label="조금 아쉬워요">😕</button>
+            <button type="button" class="chip" data-v="1" aria-pressed="false" aria-label="힘들었어요">😣</button>
+          </div>
+        </div>
+        <div class="err" id="wErr" role="alert"></div>
+        <button class="cta" id="wSave" type="button">기록 저장하기</button>
+      </div>
+
+      <!-- LIST -->
+      <div id="pane-list" hidden>
+        <div class="filters" id="lFilter">
+          <button type="button" class="chip" data-v="all" aria-pressed="true">전체</button>
+          <button type="button" class="chip" data-v="R" aria-pressed="false">R 독서</button>
+          <button type="button" class="chip" data-v="A" aria-pressed="false">A 예술문화</button>
+          <button type="button" class="chip" data-v="S" aria-pressed="false">S 스포츠</button>
+        </div>
+        <div class="list" id="list"></div>
+      </div>
+
+      <!-- GROW -->
+      <div id="pane-grow" hidden></div>
+    </section>
+  </main>
+  <p class="foot">즐거운 하루가 <b>R</b><b>A</b><b>S</b> 로 더 즐거워 집니다.</p>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script>
+/* ---------- Supabase 연결 (공개 키라서 페이지에 넣어도 괜찮아요) ---------- */
+const SB_URL = "https://cksmkbccabiebofaurti.supabase.co";
+const SB_KEY = "sb_publishable_3h40-5FiSIWpfe6MmEgFLw_kFsyFVxp";
+
+async function rpc(fn, args) {
+  let res;
+  try {
+    res = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+      method: "POST",
+      headers: { apikey: SB_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify(args || {}),
+    });
+  } catch (e) { const err = new Error("network"); err.code = "network"; throw err; }
+  const txt = await res.text();
+  let data = null; try { data = txt ? JSON.parse(txt) : null; } catch (e) {}
+  if (!res.ok) { const err = new Error(data?.message || "request_failed"); err.code = data?.message || "request_failed"; throw err; }
+  return data;
+}
+const ss = {
+  get(k) { try { return JSON.parse(sessionStorage.getItem(k)); } catch (e) { return null; } },
+  set(k, v) { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+const NET_MSG = "인터넷 연결을 확인한 뒤 다시 시도해 주세요.";
+
+const AREA = { R: { ko: "독서", c: "var(--r)" }, A: { ko: "예술문화", c: "var(--a)" }, S: { ko: "스포츠", c: "var(--s)" } };
+const SLOT = { break: "쉬는 시간", kicle: "키클 타임", lunch: "점심 시간", etc: "그 밖에" };
+const MOOD = { 5: "😆", 4: "🙂", 3: "😐", 2: "😕", 1: "😣" };
+const LEVELS = [
+  { ic: "🌰", nm: "씨앗", need: { total: 0 } },
+  { ic: "🌱", nm: "새싹", need: { total: 5 } },
+  { ic: "🌿", nm: "꽃봉오리", need: { total: 15, each: 2 } },
+  { ic: "🌷", nm: "활짝 꽃", need: { total: 30, each: 5, days: 15 } },
+  { ic: "🌳", nm: "RAS 나무", need: { total: 50, each: 10, days: 30 } },
+];
+const MEDALS = [
+  { ic: "📚", nm: "책벌레", d: "독서 10번", ok: s => s.cnt.R >= 10 },
+  { ic: "🎨", nm: "꼬마 예술가", d: "예술문화 10번", ok: s => s.cnt.A >= 10 },
+  { ic: "⚽", nm: "튼튼 선수", d: "스포츠 10번", ok: s => s.cnt.S >= 10 },
+  { ic: "⚖️", nm: "균형 잡기", d: "세 영역 모두 3번", ok: s => Math.min(s.cnt.R, s.cnt.A, s.cnt.S) >= 3 },
+  { ic: "🔥", nm: "연속 3일", d: "3일 연속 기록", ok: s => s.bestStreak >= 3 },
+  { ic: "🏃", nm: "연속 7일", d: "7일 연속 기록", ok: s => s.bestStreak >= 7 },
+  { ic: "🍱", nm: "점심 탐험가", d: "점심 시간 10번", ok: s => s.slot.lunch >= 10 },
+  { ic: "✍️", nm: "생각 부자", d: "느낀 점 50자 이상 5번", ok: s => s.longFeel >= 5 },
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const todayStr = () => ymd(new Date());
+const fmtDate = s => { const [y, m, d] = s.split("-").map(Number); const w = "일월화수목금토"[new Date(y, m - 1, d).getDay()]; return `${m}월 ${d}일 (${w})`; };
+const toRec = r => ({ ...r, createdAt: Date.parse(r.created_at) || 0 });
+function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
+
+let me = null, token = null, records = [], filter = "all", calMonth = null, pendingDelete = null;
+
+/* ---------- 학생 로그인 ---------- */
+async function login(grade, cls, num, name, pw) {
+  const r = await rpc("student_login", { p_grade: grade, p_cls: cls, p_num: num, p_name: name, p_pw: pw });
+  if (r?.error) {
+    throw new Error({
+      wrong_name: "이 번호로 이미 다른 이름이 등록되어 있어요. 학년·반·번호·이름을 다시 확인해 주세요.",
+      wrong_pw: "비밀번호가 맞지 않아요. 잊어버렸다면 선생님께 초기화를 부탁드려요.",
+      locked: "비밀번호를 여러 번 틀려서 5분 동안 잠겼어요. 잠시 뒤 다시 해 주세요.",
+      bad_input: "학년(1~6), 반, 번호와 이름, 4자리 이상 비밀번호를 확인해 주세요.",
+    }[r.error] || "기록장을 열지 못했어요.");
+  }
+  me = r.student; token = r.token;
+  ss.set("ras:sess", { me, token });
+  await enterApp();
+  if (r.first) toast("비밀번호가 정해졌어요. 다음에도 같은 비밀번호로 들어와요!");
+}
+function sessionExpired() {
+  ss.set("ras:sess", null); me = null; token = null; records = [];
+  $("app").hidden = true; $("login").hidden = false;
+  $("lgErr").textContent = "오래 지나서 다시 들어와야 해요. 비밀번호를 한 번 더 입력해 주세요.";
+}
+async function loadRecords() {
+  try { records = (await rpc("my_records", { p_token: token }) || []).map(toRec); renderAll(); }
+  catch (e) { if (e.code === "not_logged_in") sessionExpired(); else toast("기록을 불러오지 못했어요. " + NET_MSG); }
+}
+async function enterApp() {
+  $("login").hidden = true; $("app").hidden = false;
+  $("who").innerHTML = `${esc(me.name)}<small>${me.grade}학년 ${me.cls}반 ${me.num}번</small>`;
+  $("wDate").value = todayStr(); $("wDate").max = todayStr();
+  records = []; renderAll();
+  await loadRecords();
+}
+
+/* ---------- 기록하기 ---------- */
+const pick = { area: null, slot: null, mood: null };
+function bindPicker(id, field) {
+  $(id).addEventListener("click", e => {
+    const b = e.target.closest("button[data-v]"); if (!b) return;
+    pick[field] = b.dataset.v;
+    $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  });
+}
+bindPicker("wArea", "area"); bindPicker("wSlot", "slot"); bindPicker("wMood", "mood");
+
+$("wSave").addEventListener("click", async () => {
+  const date = $("wDate").value, act = $("wAct").value.trim(), feel = $("wFeel").value.trim();
+  const miss = [!date && "날짜", !pick.area && "활동 영역", !pick.slot && "시간", !act && "한 일", !feel && "느낀 점"].filter(Boolean);
+  if (miss.length) { $("wErr").textContent = miss.join(", ") + "을(를) 채워 주세요."; return; }
+  if (date > todayStr()) { $("wErr").textContent = "앞으로 올 날짜는 기록할 수 없어요."; return; }
+  $("wErr").textContent = ""; $("wSave").disabled = true;
+  const before = levelOf(stats(records));
+  try {
+    const r = await rpc("add_record", { p_token: token, p_date: date, p_area: pick.area, p_slot: pick.slot, p_activity: act, p_feeling: feel, p_mood: Number(pick.mood || 3) });
+    records = [toRec(r), ...records]; renderAll();
+    $("wAct").value = ""; $("wFeel").value = "";
+    ["wArea", "wSlot", "wMood"].forEach(id => $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false")));
+    pick.area = pick.slot = pick.mood = null;
+    const after = levelOf(stats(records));
+    toast(after > before ? `축하해요! ${LEVELS[after].nm} 단계가 되었어요 ${LEVELS[after].ic}` : "기록을 저장했어요!");
+  } catch (e) {
+    if (e.code === "not_logged_in") { sessionExpired(); return; }
+    $("wErr").textContent = e.code === "future_date" ? "앞으로 올 날짜는 기록할 수 없어요." : "저장하지 못했어요. " + NET_MSG;
+  } finally { $("wSave").disabled = false; }
+});
+
+/* ---------- 내 기록 ---------- */
+$("lFilter").addEventListener("click", e => {
+  const b = e.target.closest("button[data-v]"); if (!b) return;
+  filter = b.dataset.v;
+  $("lFilter").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  renderList();
+});
+function sorted(rs) { return [...rs].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt); }
+function recHtml(r, withTools) {
+  return `<article class="rec">
+      <div class="badge ${r.area}">${r.area}</div>
+      <div class="body">
+        <div class="meta"><span>${fmtDate(r.date)}</span><span>· ${SLOT[r.slot] || ""}</span><span>· ${AREA[r.area].ko}</span><span>${MOOD[r.mood] || ""}</span></div>
+        <div class="act">${esc(r.activity)}</div>
+        <div class="feel">${esc(r.feeling)}</div>
+        ${withTools ? `<div class="tools">${pendingDelete === r.id
+          ? `<span style="font-size:.8rem">정말 지울까요?</span><button class="yes" data-del="${r.id}">지우기</button><button data-cancel>그대로 두기</button>`
+          : `<button data-ask="${r.id}">지우기</button>`}</div>` : ""}
+      </div>
+    </article>`;
+}
+function renderList() {
+  const rows = sorted(records).filter(r => filter === "all" || r.area === filter);
+  $("list").innerHTML = rows.length ? rows.map(r => recHtml(r, true)).join("")
+    : `<div class="empty"><div class="disp">${records.length ? "이 영역 기록이 아직 없어요" : "첫 기록을 남겨 볼까요?"}</div>‘기록하기’에서 오늘 한 R·A·S 활동을 적으면 여기에 쌓여요.</div>`;
+}
+$("list").addEventListener("click", async e => {
+  const t = e.target;
+  if (t.dataset.ask) { pendingDelete = t.dataset.ask; renderList(); }
+  else if (t.hasAttribute("data-cancel")) { pendingDelete = null; renderList(); }
+  else if (t.dataset.del) {
+    const id = t.dataset.del; pendingDelete = null;
+    try { await rpc("delete_record", { p_token: token, p_id: id }); records = records.filter(r => r.id !== id); renderAll(); toast("기록을 지웠어요"); }
+    catch (err) { if (err.code === "not_logged_in") sessionExpired(); else { toast("지우지 못했어요. " + NET_MSG); renderList(); } }
+  }
+});
+
+/* ---------- 분석 ---------- */
+function stats(rs) {
+  const cnt = { R: 0, A: 0, S: 0 }, slot = { break: 0, kicle: 0, lunch: 0, etc: 0 };
+  let moodSum = 0, longFeel = 0;
+  const days = new Set();
+  rs.forEach(r => { cnt[r.area] = (cnt[r.area] || 0) + 1; slot[r.slot] = (slot[r.slot] || 0) + 1; moodSum += r.mood || 3; days.add(r.date); if ((r.feeling || "").length >= 50) longFeel++; });
+  const ds = [...days].sort();
+  let best = 0, run = 0, prev = null;
+  ds.forEach(d => { const t = new Date(d + "T00:00"); run = prev && Math.round((t - prev) / 864e5) === 1 ? run + 1 : 1; best = Math.max(best, run); prev = t; });
+  let cur = 0; { const c = new Date(todayStr() + "T00:00"); if (!days.has(ymd(c))) c.setDate(c.getDate() - 1); while (days.has(ymd(c))) { cur++; c.setDate(c.getDate() - 1); } }
+  return { total: rs.length, cnt, slot, days: days.size, bestStreak: best, curStreak: cur, mood: rs.length ? moodSum / rs.length : 0, longFeel };
+}
+function meets(s, n) { return s.total >= (n.total || 0) && Math.min(s.cnt.R, s.cnt.A, s.cnt.S) >= (n.each || 0) && s.days >= (n.days || 0); }
+function levelOf(s) { let l = 0; LEVELS.forEach((L, i) => { if (meets(s, L.need)) l = i; }); return l; }
+
+function renderGrow() {
+  const s = stats(records), lv = levelOf(s), max = Math.max(1, s.cnt.R, s.cnt.A, s.cnt.S);
+  const slotMax = Math.max(1, ...Object.values(s.slot));
+  const top = s.total ? Object.entries(s.cnt).sort((a, b) => b[1] - a[1]) : null;
+  let advice;
+  if (!s.total) advice = "아직 기록이 없어요. 오늘 쉬는 시간에 한 활동부터 적어 보세요!";
+  else {
+    const low = top[2];
+    advice = `<b>${AREA[top[0][0]].ko}</b> 활동을 가장 많이 했어요. ` + (low[1] < top[0][1] ? `다음에는 <b>${AREA[low[0]].ko}</b> 활동도 도전해 보면 R·A·S가 더 고르게 자라요.` : `세 영역을 고르게 하고 있어요. 멋져요!`);
+  }
+  const nx = LEVELS[lv + 1];
+  const reqs = nx ? [
+    [`기록 ${nx.need.total}번`, s.total, nx.need.total],
+    ...(nx.need.each ? [[`R·A·S 각각 ${nx.need.each}번`, Math.min(s.cnt.R, s.cnt.A, s.cnt.S), nx.need.each]] : []),
+    ...(nx.need.days ? [[`활동한 날 ${nx.need.days}일`, s.days, nx.need.days]] : []),
+  ] : [];
+
+  const base = calMonth || new Date(); const y = base.getFullYear(), m = base.getMonth();
+  const first = new Date(y, m, 1).getDay(), last = new Date(y, m + 1, 0).getDate();
+  const byDay = {}; records.forEach(r => { (byDay[r.date] ||= new Set()).add(r.area); });
+  let cal = "일월화수목금토".split("").map(w => `<div class="h">${w}</div>`).join("") + "<div></div>".repeat(first);
+  for (let d = 1; d <= last; d++) {
+    const k = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`, set = byDay[k];
+    const bg = set ? (set.size > 1 ? "var(--teal)" : AREA[[...set][0]].c) : "";
+    cal += `<div class="d${set ? " has" : ""}${k === todayStr() ? " today" : ""}" ${bg ? `style="background:${bg}"` : ""} title="${set ? [...set].join("·") : ""}">${d}${set && set.size > 1 ? `<span class="dots">${"<i></i>".repeat(set.size)}</span>` : ""}</div>`;
+  }
+  const monthCount = records.filter(r => r.date.startsWith(`${y}-${String(m + 1).padStart(2, "0")}`)).length;
+
+  $("pane-grow").innerHTML = `
+    <div class="stats">
+      <div class="stat"><div class="n">${s.total}</div><div class="t">전체 기록</div></div>
+      <div class="stat"><div class="n">${s.days}</div><div class="t">활동한 날</div></div>
+      <div class="stat"><div class="n">${s.curStreak}</div><div class="t">연속 기록 일수</div></div>
+    </div>
+    <div class="sec"><h3>R · A · S 균형</h3>
+      <div class="bars">${["R", "A", "S"].map(a => `<div class="bar"><span>${a} ${AREA[a].ko}</span><div class="track"><div class="fill" style="width:${s.cnt[a] / max * 100}%;background:${AREA[a].c}"></div></div><span class="v">${s.cnt[a]}</span></div>`).join("")}</div>
+      <div class="msg">${advice}</div>
+    </div>
+    <div class="sec"><h3>언제 RAS를 즐겼나요?</h3>
+      <div class="bars">${Object.keys(SLOT).map(k => `<div class="bar"><span>${SLOT[k]}</span><div class="track"><div class="fill" style="width:${s.slot[k] / slotMax * 100}%;background:var(--gold)"></div></div><span class="v">${s.slot[k]}</span></div>`).join("")}</div>
+      ${s.total ? `<div class="msg">활동한 뒤 평균 기분은 <b>${MOOD[Math.round(s.mood)]} ${s.mood.toFixed(1)}점</b>(5점 만점)이에요.</div>` : ""}
+    </div>
+    <div class="sec"><div class="calhead"><button type="button" id="calPrev" aria-label="이전 달">‹</button><h3 style="margin:0">${y}년 ${m + 1}월 · ${monthCount}번</h3><button type="button" id="calNext" aria-label="다음 달">›</button></div>
+      <div class="cal">${cal}</div>
+      <p style="font-size:.8rem;color:var(--muted);margin:8px 0 0">파랑 R · 빨강 A · 초록 S · 청록은 하루에 두 영역 이상 한 날</p>
+    </div>
+    <div class="sec"><h3>나의 성장 단계</h3>
+      <div class="ladder">${LEVELS.map((L, i) => `<div class="step${i <= lv ? " done" : ""}${i === lv ? " now" : ""}"><span class="ic">${L.ic}</span><span class="nm">${L.nm}</span></div>`).join("")}</div>
+      ${nx ? `<div class="next">다음 단계 <b class="disp">${nx.ic} ${nx.nm}</b>까지</div><div class="req">${reqs.map(([t, v, n]) => `<div><span class="ck${v >= n ? " y" : ""}">${v >= n ? "✓" : ""}</span>${t} <span style="color:var(--muted)">(${Math.min(v, n)}/${n})</span></div>`).join("")}</div>` : `<div class="next">가장 높은 단계에 올랐어요!</div>`}
+    </div>
+    <div class="sec"><h3>배지</h3>
+      <div class="medals">${MEDALS.map(M => `<div class="medal${M.ok(s) ? " got" : ""}"><div class="ic">${M.ic}</div><div class="nm">${M.nm}</div>${M.d}</div>`).join("")}</div>
+    </div>
+    <div class="sec"><h3>성장 인증서</h3>
+      ${lv >= 1 ? `<div class="cert">
+        <div class="k">CERTIFICATE</div>
+        <div class="rl"><span>R</span><span>A</span><span>S</span></div>
+        <h2>RAS 성장 인증서</h2>
+        <div class="lv">${LEVELS[lv].ic} ${LEVELS[lv].nm} 단계</div>
+        <p><b>${me.grade}학년 ${me.cls}반 ${me.num}번 ${esc(me.name)}</b></p>
+        <p>위 학생은 스마트폰을 잠시 내려놓고 독서·예술·스포츠 활동을<br>${s.total}번, ${s.days}일 동안 꾸준히 실천하여<br>몸도 마음도 튼튼하게 자랐기에 이 인증서를 드립니다.</p>
+        <p style="font-size:.85rem;color:var(--muted)">R ${s.cnt.R}번 · A ${s.cnt.A}번 · S ${s.cnt.S}번 · 최장 연속 ${s.bestStreak}일</p>
+        <div class="sig">${fmtDate(todayStr())} · RAS 활동 기록장</div>
+      </div>` : `<div class="empty"><div class="disp">🌱 새싹 단계부터 인증서가 열려요</div>기록을 5번 남기면 나만의 성장 인증서를 받을 수 있어요.</div>`}
+    </div>`;
+  $("calPrev").onclick = () => { calMonth = new Date(y, m - 1, 1); renderGrow(); };
+  $("calNext").onclick = () => { calMonth = new Date(y, m + 1, 1); renderGrow(); };
+}
+function renderAll() { if (me) { renderList(); renderGrow(); } }
+
+/* ---------- 탭 & 로그인 ---------- */
+document.querySelector(".tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t === b));
+  ["write", "list", "grow"].forEach(p => $("pane-" + p).hidden = p !== b.dataset.tab);
+});
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const g = +$("lgGrade").value, c = +$("lgClass").value, n = +$("lgNum").value, name = $("lgName").value.trim(), pw = $("lgPw").value.trim();
+  if (!g || !c || !n || !name || !pw) { $("lgErr").textContent = "학년, 반, 번호, 이름, 비밀번호를 모두 써 주세요."; return; }
+  if (pw.length < 4) { $("lgErr").textContent = "비밀번호는 4자리 이상으로 정해 주세요."; return; }
+  $("lgErr").textContent = ""; $("lgBtn").disabled = true; $("lgBtn").textContent = "여는 중…";
+  try { await login(g, c, n, name, pw); $("lgPw").value = ""; }
+  catch (err) { $("lgErr").textContent = err.code ? "기록장을 열지 못했어요. " + NET_MSG : err.message; }
+  finally { $("lgBtn").disabled = false; $("lgBtn").textContent = "들어가기"; }
+});
+$("logout").addEventListener("click", () => {
+  if (token) rpc("logout", { p_token: token }).catch(() => {});
+  ss.set("ras:sess", null); me = null; token = null; records = [];
+  $("app").hidden = true; $("login").hidden = false; $("loginForm").reset(); $("lgErr").textContent = "";
+});
+
+/* ---------- 선생님 대시보드 ---------- */
+const T = { grade: 0, cls: 0, students: [], recs: [], sel: null, sort: "num", token: ss.get("ras:tok"), resetAsk: null, loadedAt: null, timer: null };
+function showTeacher(on) {
+  $("teacher").hidden = !on; $("login").hidden = on; $("app").hidden = true;
+  document.querySelector(".wrap").classList.toggle("wide", on);
+  if (!on) { clearInterval(T.timer); T.timer = null; }
+}
+function teacherExpired() {
+  T.token = null; ss.set("ras:tok", null); openTeacher();
+  $("tPwErr").textContent = "시간이 지나 다시 비밀번호를 입력해야 해요.";
+}
+$("tLock").addEventListener("submit", async e => {
+  e.preventDefault();
+  const pw = $("tPw").value.trim(); if (!pw) return;
+  try {
+    const r = await rpc("teacher_login", { p_pw: pw });
+    if (r?.error) { $("tPwErr").textContent = r.error === "locked" ? "여러 번 틀려서 5분 동안 잠겼어요." : "비밀번호가 맞지 않아요."; $("tPw").select(); return; }
+    T.token = r.token; ss.set("ras:tok", T.token);
+    $("tPw").value = ""; $("tPwErr").textContent = ""; openTeacher();
+  } catch (err) { $("tPwErr").textContent = NET_MSG; }
+});
+function openTeacher() {
+  showTeacher(true);
+  $("tLock").hidden = !!T.token; $("tMain").hidden = !T.token;
+  if (!T.token) { $("tPw").focus(); return; }
+  let last = null; try { last = JSON.parse(localStorage.getItem("ras:tclass")); } catch (e) {}
+  if (T.grade) loadClass(T.grade, T.cls);
+  else if (last?.grade) { $("tGrade").value = last.grade; $("tClass").value = last.cls; loadClass(last.grade, last.cls); }
+  clearInterval(T.timer);
+  T.timer = setInterval(() => { if (T.grade && !document.hidden) loadClass(T.grade, T.cls, true); }, 60000);
+}
+$("toTeacher").addEventListener("click", openTeacher);
+$("tBack").addEventListener("click", () => { showTeacher(false); if (me) { $("login").hidden = true; $("app").hidden = false; } });
+$("tForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const g = +$("tGrade").value, c = +$("tClass").value; if (!g || !c) return;
+  try { localStorage.setItem("ras:tclass", JSON.stringify({ grade: g, cls: c })); } catch (err) {}
+  T.sel = null; loadClass(g, c);
+});
+async function loadClass(g, c, quiet) {
+  const changed = g !== T.grade || c !== T.cls;
+  T.grade = g; T.cls = c;
+  if (changed) { T.sel = null; T.loadedAt = null; }
+  if (!quiet) $("tBody").innerHTML = `<div class="empty" style="margin-top:12px">${g}학년 ${c}반 기록을 불러오는 중…</div>`;
+  try {
+    const r = await rpc("class_overview", { p_token: T.token, p_grade: g, p_cls: c });
+    T.students = r.students || []; T.recs = (r.records || []).map(toRec); T.loadedAt = new Date();
+    renderTeacher();
+  } catch (e) {
+    if (e.code === "not_logged_in") { teacherExpired(); return; }
+    if (!quiet) $("tBody").innerHTML = `<div class="empty" style="margin-top:12px"><div class="disp">기록을 불러오지 못했어요</div>${NET_MSG}</div>`;
+  }
+}
+function renderTeacher() {
+  const { grade: g, cls: c } = T;
+  const stamp = T.loadedAt ? `<div style="display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:10px;font-size:.82rem;color:var(--muted)">${T.loadedAt.toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit" })}에 불러옴 · 1분마다 새로 고침<button class="tlink" type="button" id="tRefresh">지금 새로 고침</button></div>` : "";
+  if (!T.students.length) {
+    $("tBody").innerHTML = stamp + `<div class="empty" style="margin-top:12px"><div class="disp">${g}학년 ${c}반에는 아직 들어온 학생이 없어요</div>학생들이 학년·반·번호·이름으로 처음 들어오면 이 목록에 나타나요.</div>`;
+    return;
+  }
+  const byKey = {}; T.recs.forEach(r => (byKey[r.sk] ||= []).push(r));
+  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 6); const wk = ymd(weekAgo);
+  const rows = T.students.map(st => {
+    const rs = byKey[st.key] || [], s = stats(rs);
+    const last = rs.reduce((m, r) => r.date > m ? r.date : m, "");
+    return { st, rs, s, lv: levelOf(s), last, week: rs.some(r => r.date >= wk) };
+  });
+  const sorters = { num: (a, b) => a.st.num - b.st.num, total: (a, b) => b.s.total - a.s.total || a.st.num - b.st.num, level: (a, b) => b.lv - a.lv || b.s.total - a.s.total, last: (a, b) => (a.last || "0").localeCompare(b.last || "0") };
+  rows.sort(sorters[T.sort]);
+  const cs = stats(T.recs), activeWeek = rows.filter(r => r.week).length;
+  const lvCount = LEVELS.map((_, i) => rows.filter(r => r.lv === i).length);
+  const quietList = rows.filter(r => !r.week).sort((a, b) => a.st.num - b.st.num);
+  const max = Math.max(1, cs.cnt.R, cs.cnt.A, cs.cnt.S);
+  const lowArea = cs.total ? Object.entries(cs.cnt).sort((a, b) => a[1] - b[1])[0][0] : null;
+  const sel = T.sel && rows.find(r => r.st.key === T.sel);
+
+  $("tBody").innerHTML = stamp + `
+    <div class="stats c4" style="margin-top:12px">
+      <div class="stat"><div class="n">${rows.length}</div><div class="t">참여 학생</div></div>
+      <div class="stat"><div class="n">${activeWeek}</div><div class="t">최근 7일 기록한 학생</div></div>
+      <div class="stat"><div class="n">${cs.total}</div><div class="t">반 전체 기록</div></div>
+      <div class="stat"><div class="n">${(cs.total / rows.length).toFixed(1)}</div><div class="t">학생당 평균 기록</div></div>
+    </div>
+    <div class="sec"><h3>반 전체 R · A · S 균형</h3>
+      <div class="bars">${["R", "A", "S"].map(a => `<div class="bar"><span>${a} ${AREA[a].ko}</span><div class="track"><div class="fill" style="width:${cs.cnt[a] / max * 100}%;background:${AREA[a].c}"></div></div><span class="v">${cs.cnt[a]}</span></div>`).join("")}</div>
+      ${lowArea ? `<div class="msg">우리 반은 <b>${AREA[lowArea].ko}</b> 활동이 가장 적어요. ${lowArea === "R" ? "아침 독서나 학급 문고를 권해 보세요." : lowArea === "A" ? "쉬는 시간 그리기·만들기 활동을 열어 보세요." : "점심 시간 운동장 놀이를 권해 보세요."}</div>` : ""}
+    </div>
+    <div class="sec"><h3>성장 단계 분포</h3>
+      <div class="lvcount">${LEVELS.map((L, i) => `<div class="step${lvCount[i] ? " done" : ""}"><span class="ic">${L.ic}</span><span class="nm">${L.nm}</span><span class="cnt">${lvCount[i]}명</span></div>`).join("")}</div>
+    </div>
+    <div class="sec"><h3>최근 7일 기록이 없는 학생 · ${quietList.length}명</h3>
+      ${quietList.length ? `<div class="quiet">${quietList.map(r => `<span>${r.st.num}번 ${esc(r.st.name)}</span>`).join("")}</div>` : `<div class="msg">모든 학생이 이번 주에 기록을 남겼어요!</div>`}
+    </div>
+    <div class="sec"><h3>학생별 기록</h3>
+      <div class="sorts" id="tSort">${[["num", "번호순"], ["total", "기록 많은 순"], ["level", "단계 높은 순"], ["last", "오래 쉰 순"]].map(([k, t]) => `<button type="button" class="chip" data-v="${k}" aria-pressed="${T.sort === k}">${t}</button>`).join("")}</div>
+      <div class="tscroll"><table class="cls">
+        <thead><tr><th>번호</th><th style="text-align:left">이름</th><th>단계</th><th>R</th><th>A</th><th>S</th><th>균형</th><th>합계</th><th>활동일</th><th>최근 기록</th></tr></thead>
+        <tbody>${rows.map(r => {
+          const t = Math.max(1, r.s.total);
+          return `<tr data-k="${esc(r.st.key)}" class="${T.sel === r.st.key ? "sel" : ""}" tabindex="0">
+            <td>${r.st.num}</td><td class="nm">${esc(r.st.name)}</td><td>${LEVELS[r.lv].ic} ${LEVELS[r.lv].nm}</td>
+            <td>${r.s.cnt.R}</td><td>${r.s.cnt.A}</td><td>${r.s.cnt.S}</td>
+            <td><span class="mini">${["R", "A", "S"].map(a => `<i style="width:${r.s.cnt[a] / t * 100}%;background:${AREA[a].c}"></i>`).join("")}</span></td>
+            <td><b>${r.s.total}</b></td><td>${r.s.days}</td>
+            <td class="${r.week ? "" : "old"}">${r.last ? fmtDate(r.last) : "없음"}</td></tr>`;
+        }).join("")}</tbody>
+      </table></div>
+      <p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">학생 줄을 누르면 그 학생의 기록을 자세히 볼 수 있어요.</p>
+      ${sel ? `<div class="tdetail">
+        <div class="hd"><h3 style="margin:0">${sel.st.num}번 ${esc(sel.st.name)} · ${LEVELS[sel.lv].ic} ${LEVELS[sel.lv].nm} · 연속 ${sel.s.curStreak}일 · 평균 기분 ${sel.s.total ? MOOD[Math.round(sel.s.mood)] : "-"}</h3><span style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">${T.resetAsk === sel.st.key
+          ? `<span style="font-size:.85rem">비밀번호를 초기화할까요?</span><button class="tlink" type="button" id="tResetYes" style="color:var(--a)">초기화</button><button class="tlink" type="button" id="tResetNo">취소</button>`
+          : sel.st.hasPw ? `<button class="tlink" type="button" id="tReset">비밀번호 초기화</button>` : `<span style="font-size:.85rem;color:var(--muted)">비밀번호 초기화됨</span>`}<button class="tlink" type="button" id="tClose">닫기</button></span></div>
+        <div class="list">${sel.rs.length ? sorted(sel.rs).map(r => recHtml(r, false)).join("") : `<div class="empty">아직 남긴 기록이 없어요.</div>`}</div>
+      </div>` : ""}
+    </div>`;
+}
+$("tBody").addEventListener("click", async e => {
+  const sb = e.target.closest("#tSort button"); if (sb) { T.sort = sb.dataset.v; renderTeacher(); return; }
+  if (e.target.id === "tRefresh") { loadClass(T.grade, T.cls, true); return; }
+  if (e.target.id === "tClose") { T.sel = null; T.resetAsk = null; renderTeacher(); return; }
+  if (e.target.id === "tReset") { T.resetAsk = T.sel; renderTeacher(); return; }
+  if (e.target.id === "tResetNo") { T.resetAsk = null; renderTeacher(); return; }
+  if (e.target.id === "tResetYes") {
+    const key = T.resetAsk; T.resetAsk = null;
+    try {
+      await rpc("reset_student_pw", { p_token: T.token, p_key: key });
+      toast("초기화했어요. 학생이 다음에 들어올 때 새 비밀번호를 정해요.");
+      loadClass(T.grade, T.cls, true);
+    } catch (err) { if (err.code === "not_logged_in") teacherExpired(); else { toast("초기화하지 못했어요. " + NET_MSG); renderTeacher(); } }
+    return;
+  }
+  const tr = e.target.closest("tr[data-k]");
+  if (tr) { T.sel = T.sel === tr.dataset.k ? null : tr.dataset.k; T.resetAsk = null; renderTeacher(); $("tBody").querySelector(".tdetail")?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+});
+$("tBody").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("tr[data-k]")) e.target.click(); });
+
+/* ---------- 시작 ---------- */
+(() => {
+  const saved = ss.get("ras:sess");
+  if (saved?.token && saved?.me) { me = saved.me; token = saved.token; enterApp(); }
+})();
+</script>
+</body>
+</html>
