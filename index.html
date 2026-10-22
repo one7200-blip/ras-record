@@ -55,7 +55,7 @@ button { cursor: pointer; }
 .ghost { background: none; border: 1.5px solid var(--line); border-radius: 99px; padding: 4px 12px; font-size: .85rem; color: var(--muted); }
 .ghost:hover { border-color: var(--teal); color: var(--teal-dk); }
 
-.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0 20px; }
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0 20px; }
 .tab { border: 2px solid var(--line); background: #fff; border-radius: 14px; padding: 10px 6px; font-family: var(--display); font-size: 1.05rem; color: var(--muted); }
 .tab[aria-selected="true"] { background: var(--teal); border-color: var(--teal); color: #fff; }
 
@@ -200,6 +200,48 @@ table.cls .mini i { display: block; height: 100%; }
 .tdetail .hd { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 .tlink { background: none; border: 0; color: var(--teal-dk); text-decoration: underline; font-size: .9rem; padding: 0; }
 .sorts { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+/* Challenge period & plan */
+.period { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: #e3f4f5; border-radius: 14px; padding: 10px 14px; margin-bottom: 16px; }
+.period .dd { font-family: var(--display); font-size: 1.35rem; color: var(--teal-dk); font-variant-numeric: tabular-nums; }
+.period .pd { font-size: .88rem; color: var(--muted); }
+.plancards { display: grid; gap: 12px; }
+.pcard { border-radius: 18px; padding: 14px; display: grid; gap: 10px; }
+.pcard.R { background: var(--r-bg); } .pcard.A { background: var(--a-bg); } .pcard.S { background: var(--s-bg); }
+.pcard .ph { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 1.15rem; }
+.pcard .ph .big { font-size: 2rem; line-height: 1; }
+.pcard.R .ph { color: var(--r); } .pcard.A .ph { color: var(--a); } .pcard.S .ph { color: var(--s); }
+.pcard textarea.in { min-height: 64px; }
+.pcard .in:disabled { background: rgba(255,255,255,.6); color: var(--ink); }
+.goal { display: flex; align-items: center; gap: 10px; font-size: .95rem; flex-wrap: wrap; }
+.goal button { width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--line); background: #fff; font-size: 1.2rem; line-height: 1; }
+.goal output { font-family: var(--display); font-size: 1.5rem; min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.lockmsg { background: #fff6e0; border: 1.5px dashed var(--gold); border-radius: 12px; padding: 10px 12px; font-size: .9rem; color: #7a5a12; }
+.progs { display: grid; gap: 10px; }
+.prog { border-radius: 16px; padding: 12px 14px; display: grid; grid-template-columns: 46px 1fr auto; gap: 12px; align-items: center; background: #fff; border: 1.5px solid var(--line); }
+.prog .body { min-width: 0; }
+.prog .pl { font-size: .9rem; overflow-wrap: anywhere; margin: 2px 0 6px; }
+.prog .track { height: 14px; background: #f2ece2; border-radius: 99px; overflow: hidden; }
+.prog .fill { height: 100%; border-radius: 99px; transition: width .5s; }
+.prog .cnt { font-family: var(--display); font-size: 1.3rem; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.prog .cnt small { font-size: .85rem; color: var(--muted); }
+.prog.done { border-color: var(--gold); background: #fffaf0; }
+.stamp { display: inline-block; font-family: var(--display); font-size: .8rem; color: #fff; background: var(--gold); border-radius: 99px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+.cert .plans { text-align: left; display: grid; gap: 4px; font-size: .9rem; max-width: 420px; margin: 0 auto; }
+table.cls td.g { white-space: nowrap; }
+table.cls td.g.ok { color: var(--s); font-weight: 700; }
+.tplan { display: grid; gap: 6px; margin-bottom: 12px; font-size: .9rem; }
+.tplan div { display: grid; grid-template-columns: 26px 1fr auto; gap: 8px; align-items: start; }
+@media (max-width: 460px) { .tab { font-size: .92rem; padding: 9px 2px; } }
+.next-cta { background: #fffaf0; border: 2px solid var(--gold); border-radius: 16px; padding: 14px; display: grid; gap: 10px; text-align: center; }
+.next-cta .disp { font-size: 1.2rem; }
+.next-cta .cta { background: var(--gold); box-shadow: 0 4px 0 #c98f1c; color: #4a3505; }
+.hist { display: grid; gap: 8px; margin-top: 6px; }
+.hist h3 { font-size: 1.1rem; color: var(--teal-dk); }
+.hrow { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; background: #fff; display: grid; gap: 4px; font-size: .88rem; }
+.hrow .ht { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-family: var(--display); font-size: 1rem; }
+.hrow .hl { display: grid; grid-template-columns: 18px 1fr auto; gap: 6px; }
+.certs { display: grid; gap: 14px; }
+.rbadge { display: inline-block; font-family: var(--display); font-size: .82rem; background: var(--teal); color: #fff; border-radius: 99px; padding: 1px 9px; }
 .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 99px; font-size: .95rem; z-index: 9; }
 @media (max-width: 420px) {
   .areas .hint { display: none; }
@@ -217,7 +259,7 @@ body{margin:0}
   <header class="top">
     <div class="phone">스마트폰을 잠시 내려놓고 · Phone <span class="tog off"><i></i>OFF</span></div>
     <div class="logo"><div class="l" aria-label="RAS"><b>R</b><b>A</b><b>S</b></div><span class="tog on" style="font-size:1rem;padding:4px 4px 4px 12px"><i style="width:24px;height:24px"></i>ON</span></div>
-    <div class="banner">독서 · 예술 · 스포츠로 신나는 학교 생활 기록장</div>
+    <div class="banner">2026. 10. 22 ~ 11. 30 · 나의 RAS 도전 기록장</div>
   </header>
 
   <main class="sheet">
@@ -274,9 +316,27 @@ body{margin:0}
         <span style="display:flex;gap:6px;flex-wrap:wrap"><button class="ghost" id="logout" type="button">다른 친구로 바꾸기</button></span>
       </div>
       <div class="tabs" role="tablist">
+        <button class="tab" role="tab" data-tab="plan" aria-selected="false" id="tab-plan">나의 목표</button>
         <button class="tab" role="tab" data-tab="write" aria-selected="true" id="tab-write">기록하기</button>
         <button class="tab" role="tab" data-tab="list" aria-selected="false" id="tab-list">내 기록</button>
-        <button class="tab" role="tab" data-tab="grow" aria-selected="false" id="tab-grow">성장 분석</button>
+        <button class="tab" role="tab" data-tab="grow" aria-selected="false" id="tab-grow">달성 현황</button>
+      </div>
+      <div class="period"><div><div class="pd">RAS 도전 기간 · 10월 22일 ~ 11월 30일</div><div class="dd" id="dday"></div></div><div class="pd" id="periodSum"></div></div>
+
+      <!-- PLAN -->
+      <div id="pane-plan" class="stack" hidden>
+        <p style="margin:0"><b>11월 30일까지</b> 독서, 예술문화, 스포츠 활동을 각각 몇 번 할지 정해요. 목표를 채우면 <b>나만의 목표 달성 배지</b>를 받아요.</p>
+        <div class="plancards">
+          <div class="pcard R"><div class="ph"><span class="big">R</span>독서</div>
+            <div class="goal"><span>11월 30일까지</span><button type="button" data-a="R" data-step="-1" aria-label="독서 목표 줄이기">−</button><output id="gR">5</output><span>번</span><button type="button" data-a="R" data-step="1" aria-label="독서 목표 늘리기">+</button></div></div>
+          <div class="pcard A"><div class="ph"><span class="big">A</span>예술문화</div>
+            <div class="goal"><span>11월 30일까지</span><button type="button" data-a="A" data-step="-1" aria-label="예술문화 목표 줄이기">−</button><output id="gA">5</output><span>번</span><button type="button" data-a="A" data-step="1" aria-label="예술문화 목표 늘리기">+</button></div></div>
+          <div class="pcard S"><div class="ph"><span class="big">S</span>스포츠</div>
+            <div class="goal"><span>11월 30일까지</span><button type="button" data-a="S" data-step="-1" aria-label="스포츠 목표 줄이기">−</button><output id="gS">5</output><span>번</span><button type="button" data-a="S" data-step="1" aria-label="스포츠 목표 늘리기">+</button></div></div>
+        </div>
+        <div id="planNote" class="lockmsg"></div>
+        <div class="err" id="pErr" role="alert"></div>
+        <button class="cta" id="pSave" type="button">목표 저장하기</button>
       </div>
 
       <!-- WRITE -->
@@ -338,6 +398,9 @@ body{margin:0}
 const SB_URL = "https://cksmkbccabiebofaurti.supabase.co";
 const SB_KEY = "sb_publishable_3h40-5FiSIWpfe6MmEgFLw_kFsyFVxp";
 
+/* ---------- 도전 기간 ---------- */
+const START = "2026-10-22", END = "2026-11-30";
+
 async function rpc(fn, args) {
   let res;
   try {
@@ -349,7 +412,10 @@ async function rpc(fn, args) {
   } catch (e) { const err = new Error("network"); err.code = "network"; throw err; }
   const txt = await res.text();
   let data = null; try { data = txt ? JSON.parse(txt) : null; } catch (e) {}
-  if (!res.ok) { const err = new Error(data?.message || "request_failed"); err.code = data?.message || "request_failed"; throw err; }
+  if (!res.ok) {
+    const code = data?.code === "PGRST202" || data?.code === "PGRST205" ? "server_not_ready" : data?.message || "request_failed";
+    const err = new Error(code); err.code = code; throw err;
+  }
   return data;
 }
 const ss = {
@@ -357,25 +423,23 @@ const ss = {
   set(k, v) { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
 };
 const NET_MSG = "인터넷 연결을 확인한 뒤 다시 시도해 주세요.";
+const SETUP_MSG = "서버 설정(update-goals.sql)이 아직 적용되지 않았어요. 선생님께 알려 주세요.";
+const failMsg = (e, what) => e?.code === "server_not_ready" ? SETUP_MSG : `${what}. ${NET_MSG}`;
 
 const AREA = { R: { ko: "독서", c: "var(--r)" }, A: { ko: "예술문화", c: "var(--a)" }, S: { ko: "스포츠", c: "var(--s)" } };
 const SLOT = { break: "쉬는 시간", kicle: "키클 타임", lunch: "점심 시간", etc: "그 밖에" };
 const MOOD = { 5: "😆", 4: "🙂", 3: "😐", 2: "😕", 1: "😣" };
-const LEVELS = [
-  { ic: "🌰", nm: "씨앗", need: { total: 0 } },
-  { ic: "🌱", nm: "새싹", need: { total: 5 } },
-  { ic: "🌿", nm: "꽃봉오리", need: { total: 15, each: 2 } },
-  { ic: "🌷", nm: "활짝 꽃", need: { total: 30, each: 5, days: 15 } },
-  { ic: "🌳", nm: "RAS 나무", need: { total: 50, each: 10, days: 30 } },
-];
+/* 배지: s = 기간 안 기록 통계, p = 나만의 목표 달성 정보 */
 const MEDALS = [
-  { ic: "📚", nm: "책벌레", d: "독서 10번", ok: s => s.cnt.R >= 10 },
-  { ic: "🎨", nm: "꼬마 예술가", d: "예술문화 10번", ok: s => s.cnt.A >= 10 },
-  { ic: "⚽", nm: "튼튼 선수", d: "스포츠 10번", ok: s => s.cnt.S >= 10 },
+  { ic: "🏆", nm: "나만의 목표 달성", d: "세 영역 목표 모두 채우기", ok: (s, p) => p.all, big: true },
+  { ic: "📚", nm: "독서 목표 달성", d: "독서 목표 횟수 채우기", ok: (s, p) => p.done.R },
+  { ic: "🎨", nm: "예술문화 목표 달성", d: "예술문화 목표 횟수 채우기", ok: (s, p) => p.done.A },
+  { ic: "⚽", nm: "스포츠 목표 달성", d: "스포츠 목표 횟수 채우기", ok: (s, p) => p.done.S },
+  { ic: "🌱", nm: "첫걸음", d: "첫 기록 남기기", ok: s => s.total >= 1 },
   { ic: "⚖️", nm: "균형 잡기", d: "세 영역 모두 3번", ok: s => Math.min(s.cnt.R, s.cnt.A, s.cnt.S) >= 3 },
   { ic: "🔥", nm: "연속 3일", d: "3일 연속 기록", ok: s => s.bestStreak >= 3 },
   { ic: "🏃", nm: "연속 7일", d: "7일 연속 기록", ok: s => s.bestStreak >= 7 },
-  { ic: "🍱", nm: "점심 탐험가", d: "점심 시간 10번", ok: s => s.slot.lunch >= 10 },
+  { ic: "🍱", nm: "점심 탐험가", d: "점심 시간 5번", ok: s => s.slot.lunch >= 5 },
   { ic: "✍️", nm: "생각 부자", d: "느낀 점 50자 이상 5번", ok: s => s.longFeel >= 5 },
 ];
 
@@ -385,9 +449,23 @@ const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")
 const todayStr = () => ymd(new Date());
 const fmtDate = s => { const [y, m, d] = s.split("-").map(Number); const w = "일월화수목금토"[new Date(y, m - 1, d).getDay()]; return `${m}월 ${d}일 (${w})`; };
 const toRec = r => ({ ...r, createdAt: Date.parse(r.created_at) || 0 });
-function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
+const inPeriod = r => r.date >= START && r.date <= END;
+const dayDiff = (a, b) => Math.round((new Date(b + "T00:00") - new Date(a + "T00:00")) / 864e5);
+const periodOpen = () => todayStr() <= END;
+function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2800); }
 
-let me = null, token = null, records = [], filter = "all", calMonth = null, pendingDelete = null;
+let me = null, token = null, records = [], myGoals = null, filter = "all", calMonth = null, pendingDelete = null;
+
+/* ---------- 나만의 목표 달성 계산 (도전 기간 안의 기록만 셈) ---------- */
+const toGoals = g => g ? { R: g.r_goal, A: g.a_goal, S: g.s_goal } : null;
+function progress(rs, goal) {
+  const cnt = { R: 0, A: 0, S: 0 };
+  rs.filter(inPeriod).forEach(r => cnt[r.area]++);
+  if (!goal) return { cnt, goal: null, done: { R: false, A: false, S: false }, nDone: 0, all: false, pct: 0 };
+  const done = { R: cnt.R >= goal.R, A: cnt.A >= goal.A, S: cnt.S >= goal.S };
+  const nDone = +done.R + +done.A + +done.S;
+  return { cnt, goal, done, nDone, all: nDone === 3, pct: (Math.min(cnt.R, goal.R) + Math.min(cnt.A, goal.A) + Math.min(cnt.S, goal.S)) / (goal.R + goal.A + goal.S) };
+}
 
 /* ---------- 학생 로그인 ---------- */
 async function login(grade, cls, num, name, pw) {
@@ -406,21 +484,68 @@ async function login(grade, cls, num, name, pw) {
   if (r.first) toast("비밀번호가 정해졌어요. 다음에도 같은 비밀번호로 들어와요!");
 }
 function sessionExpired() {
-  ss.set("ras:sess", null); me = null; token = null; records = [];
+  ss.set("ras:sess", null); me = null; token = null; records = []; myGoals = null;
   $("app").hidden = true; $("login").hidden = false;
   $("lgErr").textContent = "오래 지나서 다시 들어와야 해요. 비밀번호를 한 번 더 입력해 주세요.";
 }
-async function loadRecords() {
-  try { records = (await rpc("my_records", { p_token: token }) || []).map(toRec); renderAll(); }
-  catch (e) { if (e.code === "not_logged_in") sessionExpired(); else toast("기록을 불러오지 못했어요. " + NET_MSG); }
+async function loadAll() {
+  try {
+    const [rs, g] = await Promise.all([rpc("my_records", { p_token: token }), rpc("get_my_goals", { p_token: token })]);
+    records = (rs || []).map(toRec); myGoals = toGoals(g);
+    renderAll();
+    return true;
+  } catch (e) {
+    if (e.code === "not_logged_in") sessionExpired(); else toast(failMsg(e, "기록을 불러오지 못했어요"));
+    return false;
+  }
 }
 async function enterApp() {
   $("login").hidden = true; $("app").hidden = false;
   $("who").innerHTML = `${esc(me.name)}<small>${me.grade}학년 ${me.cls}반 ${me.num}번</small>`;
-  $("wDate").value = todayStr(); $("wDate").max = todayStr();
-  records = []; renderAll();
-  await loadRecords();
+  const t = todayStr();
+  $("wDate").min = START; $("wDate").max = t < END ? t : END;
+  $("wDate").value = t < START ? START : t > END ? END : t;
+  records = []; myGoals = null; renderAll();
+  if (await loadAll() && !myGoals) { selectTab("plan"); toast("먼저 11월 30일까지의 나만의 목표를 정해요!"); }
 }
+function renderPeriod() {
+  const t = todayStr();
+  $("dday").textContent = t < START ? `시작까지 ${dayDiff(t, START)}일` : t > END ? "도전 기간이 끝났어요" : `D-${dayDiff(t, END)} · ${dayDiff(START, t) + 1}일째`;
+  const p = progress(records, myGoals);
+  $("periodSum").innerHTML = !myGoals ? `<b>목표를 아직 정하지 않았어요</b>` : p.all ? `<b>🏆 나만의 목표 달성!</b>` : `목표 3개 중 <b>${p.nDone}개</b> 달성`;
+}
+
+/* ---------- 나의 목표 ---------- */
+const goals = { R: 5, A: 5, S: 5 };
+function renderPlan() {
+  if (myGoals) Object.assign(goals, myGoals);
+  ["R", "A", "S"].forEach(a => $("g" + a).textContent = goals[a]);
+  const open = periodOpen();
+  document.querySelectorAll(".goal button").forEach(b => b.hidden = !open);
+  $("pSave").hidden = !open;
+  $("pSave").textContent = myGoals ? "목표 바꿔서 저장하기" : "목표 저장하기";
+  $("planNote").innerHTML = !open ? "도전 기간이 끝나서 목표를 바꿀 수 없어요."
+    : myGoals ? "목표는 11월 30일까지 언제든 바꿀 수 있어요. 너무 쉬운 목표보다 조금 노력하면 닿을 목표가 좋아요!"
+    : "−, + 버튼으로 횟수를 고른 뒤 <b>목표 저장하기</b>를 눌러요.";
+}
+document.querySelector(".plancards").addEventListener("click", e => {
+  const b = e.target.closest("button[data-step]"); if (!b || b.hidden) return;
+  const a = b.dataset.a; goals[a] = Math.max(1, Math.min(50, goals[a] + Number(b.dataset.step)));
+  $("g" + a).textContent = goals[a];
+});
+$("pSave").addEventListener("click", async () => {
+  $("pErr").textContent = ""; $("pSave").disabled = true;
+  const isNew = !myGoals;
+  try {
+    const g = await rpc("save_goals", { p_token: token, p_r: goals.R, p_a: goals.A, p_s: goals.S });
+    myGoals = toGoals(g); renderAll();
+    toast(isNew ? "목표를 정했어요! 이제 실천하고 기록해요." : "목표를 바꿨어요!");
+    if (isNew) selectTab("write");
+  } catch (e) {
+    if (e.code === "not_logged_in") { sessionExpired(); return; }
+    $("pErr").textContent = failMsg(e, "저장하지 못했어요");
+  } finally { $("pSave").disabled = false; }
+});
 
 /* ---------- 기록하기 ---------- */
 const pick = { area: null, slot: null, mood: null };
@@ -438,19 +563,23 @@ $("wSave").addEventListener("click", async () => {
   const miss = [!date && "날짜", !pick.area && "활동 영역", !pick.slot && "시간", !act && "한 일", !feel && "느낀 점"].filter(Boolean);
   if (miss.length) { $("wErr").textContent = miss.join(", ") + "을(를) 채워 주세요."; return; }
   if (date > todayStr()) { $("wErr").textContent = "앞으로 올 날짜는 기록할 수 없어요."; return; }
+  if (date < START || date > END) { $("wErr").textContent = "도전 기간(10월 22일 ~ 11월 30일) 안의 날짜만 기록할 수 있어요."; return; }
   $("wErr").textContent = ""; $("wSave").disabled = true;
-  const before = levelOf(stats(records));
+  const area = pick.area, before = progress(records, myGoals);
   try {
-    const r = await rpc("add_record", { p_token: token, p_date: date, p_area: pick.area, p_slot: pick.slot, p_activity: act, p_feeling: feel, p_mood: Number(pick.mood || 3) });
+    const r = await rpc("add_record", { p_token: token, p_date: date, p_area: area, p_slot: pick.slot, p_activity: act, p_feeling: feel, p_mood: Number(pick.mood || 3) });
     records = [toRec(r), ...records]; renderAll();
     $("wAct").value = ""; $("wFeel").value = "";
     ["wArea", "wSlot", "wMood"].forEach(id => $(id).querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false")));
     pick.area = pick.slot = pick.mood = null;
-    const after = levelOf(stats(records));
-    toast(after > before ? `축하해요! ${LEVELS[after].nm} 단계가 되었어요 ${LEVELS[after].ic}` : "기록을 저장했어요!");
+    const after = progress(records, myGoals);
+    toast(!myGoals ? "기록을 저장했어요!"
+      : after.all && !before.all ? "🏆 나만의 목표 달성! ‘달성 현황’에서 배지를 확인해요."
+      : after.done[area] && !before.done[area] ? `${AREA[area].ko} 목표 달성 배지를 받았어요! 🎉`
+      : `기록을 저장했어요! ${AREA[area].ko} ${after.cnt[area]}/${after.goal[area]}`);
   } catch (e) {
     if (e.code === "not_logged_in") { sessionExpired(); return; }
-    $("wErr").textContent = e.code === "future_date" ? "앞으로 올 날짜는 기록할 수 없어요." : "저장하지 못했어요. " + NET_MSG;
+    $("wErr").textContent = e.code === "future_date" ? "앞으로 올 날짜는 기록할 수 없어요." : failMsg(e, "저장하지 못했어요");
   } finally { $("wSave").disabled = false; }
 });
 
@@ -466,7 +595,7 @@ function recHtml(r, withTools) {
   return `<article class="rec">
       <div class="badge ${r.area}">${r.area}</div>
       <div class="body">
-        <div class="meta"><span>${fmtDate(r.date)}</span><span>· ${SLOT[r.slot] || ""}</span><span>· ${AREA[r.area].ko}</span><span>${MOOD[r.mood] || ""}</span></div>
+        <div class="meta"><span>${fmtDate(r.date)}</span><span>· ${SLOT[r.slot] || ""}</span><span>· ${AREA[r.area].ko}</span><span>${MOOD[r.mood] || ""}</span>${inPeriod(r) ? "" : `<span>· 도전 기간 밖</span>`}</div>
         <div class="act">${esc(r.activity)}</div>
         <div class="feel">${esc(r.feeling)}</div>
         ${withTools ? `<div class="tools">${pendingDelete === r.id
@@ -487,11 +616,11 @@ $("list").addEventListener("click", async e => {
   else if (t.dataset.del) {
     const id = t.dataset.del; pendingDelete = null;
     try { await rpc("delete_record", { p_token: token, p_id: id }); records = records.filter(r => r.id !== id); renderAll(); toast("기록을 지웠어요"); }
-    catch (err) { if (err.code === "not_logged_in") sessionExpired(); else { toast("지우지 못했어요. " + NET_MSG); renderList(); } }
+    catch (err) { if (err.code === "not_logged_in") sessionExpired(); else { toast(failMsg(err, "지우지 못했어요")); renderList(); } }
   }
 });
 
-/* ---------- 분석 ---------- */
+/* ---------- 달성 현황 ---------- */
 function stats(rs) {
   const cnt = { R: 0, A: 0, S: 0 }, slot = { break: 0, kicle: 0, lunch: 0, etc: 0 };
   let moodSum = 0, longFeel = 0;
@@ -503,85 +632,74 @@ function stats(rs) {
   let cur = 0; { const c = new Date(todayStr() + "T00:00"); if (!days.has(ymd(c))) c.setDate(c.getDate() - 1); while (days.has(ymd(c))) { cur++; c.setDate(c.getDate() - 1); } }
   return { total: rs.length, cnt, slot, days: days.size, bestStreak: best, curStreak: cur, mood: rs.length ? moodSum / rs.length : 0, longFeel };
 }
-function meets(s, n) { return s.total >= (n.total || 0) && Math.min(s.cnt.R, s.cnt.A, s.cnt.S) >= (n.each || 0) && s.days >= (n.days || 0); }
-function levelOf(s) { let l = 0; LEVELS.forEach((L, i) => { if (meets(s, L.need)) l = i; }); return l; }
-
 function renderGrow() {
-  const s = stats(records), lv = levelOf(s), max = Math.max(1, s.cnt.R, s.cnt.A, s.cnt.S);
+  const prs = records.filter(inPeriod), s = stats(prs), p = progress(records, myGoals);
   const slotMax = Math.max(1, ...Object.values(s.slot));
-  const top = s.total ? Object.entries(s.cnt).sort((a, b) => b[1] - a[1]) : null;
-  let advice;
-  if (!s.total) advice = "아직 기록이 없어요. 오늘 쉬는 시간에 한 활동부터 적어 보세요!";
-  else {
-    const low = top[2];
-    advice = `<b>${AREA[top[0][0]].ko}</b> 활동을 가장 많이 했어요. ` + (low[1] < top[0][1] ? `다음에는 <b>${AREA[low[0]].ko}</b> 활동도 도전해 보면 R·A·S가 더 고르게 자라요.` : `세 영역을 고르게 하고 있어요. 멋져요!`);
-  }
-  const nx = LEVELS[lv + 1];
-  const reqs = nx ? [
-    [`기록 ${nx.need.total}번`, s.total, nx.need.total],
-    ...(nx.need.each ? [[`R·A·S 각각 ${nx.need.each}번`, Math.min(s.cnt.R, s.cnt.A, s.cnt.S), nx.need.each]] : []),
-    ...(nx.need.days ? [[`활동한 날 ${nx.need.days}일`, s.days, nx.need.days]] : []),
-  ] : [];
 
-  const base = calMonth || new Date(); const y = base.getFullYear(), m = base.getMonth();
+  const progHtml = myGoals ? ["R", "A", "S"].map(a => `
+      <div class="prog${p.done[a] ? " done" : ""}">
+        <div class="badge ${a}">${a}</div>
+        <div class="body"><b class="disp">${AREA[a].ko}</b>${p.done[a] ? `<span class="stamp">달성</span>` : ""}
+          <div class="track" style="margin-top:6px"><div class="fill" style="width:${Math.min(1, p.cnt[a] / p.goal[a]) * 100}%;background:${AREA[a].c}"></div></div></div>
+        <div class="cnt">${p.cnt[a]}<small> / ${p.goal[a]}번</small></div>
+      </div>`).join("")
+    : `<div class="empty"><div class="disp">아직 목표가 없어요</div>‘나의 목표’에서 11월 30일까지 몇 번 할지 먼저 정해요.</div>`;
+
+  let advice = "";
+  if (myGoals && !p.all) {
+    const left = ["R", "A", "S"].filter(a => !p.done[a]).map(a => `${AREA[a].ko} ${p.goal[a] - p.cnt[a]}번`);
+    const daysLeft = periodOpen() ? dayDiff(todayStr(), END) + 1 : 0;
+    advice = `<div class="msg">나만의 목표 달성까지 <b>${left.join(", ")}</b> 남았어요.${daysLeft ? ` 남은 기간은 ${daysLeft}일이에요. 할 수 있어요!` : ""}</div>`;
+  } else if (myGoals && p.all) advice = `<div class="msg"><b>🏆 나만의 목표를 모두 달성했어요!</b> 정말 멋져요. 목표를 더 높여서 또 도전해도 좋아요.</div>`;
+
+  const base = calMonth || new Date(Math.min(Math.max(new Date(todayStr() + "T00:00").getTime(), new Date(START + "T00:00").getTime()), new Date(END + "T00:00").getTime()));
+  const y = base.getFullYear(), m = base.getMonth();
   const first = new Date(y, m, 1).getDay(), last = new Date(y, m + 1, 0).getDate();
-  const byDay = {}; records.forEach(r => { (byDay[r.date] ||= new Set()).add(r.area); });
+  const byDay = {}; prs.forEach(r => { (byDay[r.date] ||= new Set()).add(r.area); });
   let cal = "일월화수목금토".split("").map(w => `<div class="h">${w}</div>`).join("") + "<div></div>".repeat(first);
   for (let d = 1; d <= last; d++) {
     const k = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`, set = byDay[k];
     const bg = set ? (set.size > 1 ? "var(--teal)" : AREA[[...set][0]].c) : "";
-    cal += `<div class="d${set ? " has" : ""}${k === todayStr() ? " today" : ""}" ${bg ? `style="background:${bg}"` : ""} title="${set ? [...set].join("·") : ""}">${d}${set && set.size > 1 ? `<span class="dots">${"<i></i>".repeat(set.size)}</span>` : ""}</div>`;
+    const out = k < START || k > END;
+    cal += `<div class="d${set ? " has" : ""}${k === todayStr() ? " today" : ""}" style="${bg ? `background:${bg};` : ""}${out ? "opacity:.35;" : ""}" title="${set ? [...set].join("·") : ""}">${d}${set && set.size > 1 ? `<span class="dots">${"<i></i>".repeat(set.size)}</span>` : ""}</div>`;
   }
-  const monthCount = records.filter(r => r.date.startsWith(`${y}-${String(m + 1).padStart(2, "0")}`)).length;
+  const got = MEDALS.filter(M => M.ok(s, p)).length;
 
   $("pane-grow").innerHTML = `
-    <div class="stats">
-      <div class="stat"><div class="n">${s.total}</div><div class="t">전체 기록</div></div>
+    <div class="sec" style="margin-top:0"><h3>나만의 목표 · 11월 30일까지</h3>
+      <div class="progs">${progHtml}</div>${advice}
+    </div>
+
+    <div class="sec"><h3>배지 · ${got}/${MEDALS.length}개</h3>
+      <div class="medals">${MEDALS.map(M => `<div class="medal${M.ok(s, p) ? " got" : ""}"${M.big ? ` style="grid-column:1/-1"` : ""}><div class="ic"${M.big ? ` style="font-size:2.4rem"` : ""}>${M.ic}</div><div class="nm"${M.big ? ` style="font-size:1.2rem"` : ""}>${M.nm}</div>${M.d}</div>`).join("")}</div>
+    </div>
+
+    <div class="sec"><div class="calhead"><button type="button" id="calPrev" aria-label="이전 달">‹</button><h3 style="margin:0">${y}년 ${m + 1}월</h3><button type="button" id="calNext" aria-label="다음 달">›</button></div>
+      <div class="cal">${cal}</div>
+      <p style="font-size:.8rem;color:var(--muted);margin:8px 0 0">파랑 R · 빨강 A · 초록 S · 청록은 하루에 두 영역 이상 한 날 · 흐린 날은 도전 기간 밖</p>
+    </div>
+
+    <div class="stats sec">
+      <div class="stat"><div class="n">${s.total}</div><div class="t">기간 내 기록</div></div>
       <div class="stat"><div class="n">${s.days}</div><div class="t">활동한 날</div></div>
       <div class="stat"><div class="n">${s.curStreak}</div><div class="t">연속 기록 일수</div></div>
     </div>
-    <div class="sec"><h3>R · A · S 균형</h3>
-      <div class="bars">${["R", "A", "S"].map(a => `<div class="bar"><span>${a} ${AREA[a].ko}</span><div class="track"><div class="fill" style="width:${s.cnt[a] / max * 100}%;background:${AREA[a].c}"></div></div><span class="v">${s.cnt[a]}</span></div>`).join("")}</div>
-      <div class="msg">${advice}</div>
-    </div>
+
     <div class="sec"><h3>언제 RAS를 즐겼나요?</h3>
       <div class="bars">${Object.keys(SLOT).map(k => `<div class="bar"><span>${SLOT[k]}</span><div class="track"><div class="fill" style="width:${s.slot[k] / slotMax * 100}%;background:var(--gold)"></div></div><span class="v">${s.slot[k]}</span></div>`).join("")}</div>
       ${s.total ? `<div class="msg">활동한 뒤 평균 기분은 <b>${MOOD[Math.round(s.mood)]} ${s.mood.toFixed(1)}점</b>(5점 만점)이에요.</div>` : ""}
-    </div>
-    <div class="sec"><div class="calhead"><button type="button" id="calPrev" aria-label="이전 달">‹</button><h3 style="margin:0">${y}년 ${m + 1}월 · ${monthCount}번</h3><button type="button" id="calNext" aria-label="다음 달">›</button></div>
-      <div class="cal">${cal}</div>
-      <p style="font-size:.8rem;color:var(--muted);margin:8px 0 0">파랑 R · 빨강 A · 초록 S · 청록은 하루에 두 영역 이상 한 날</p>
-    </div>
-    <div class="sec"><h3>나의 성장 단계</h3>
-      <div class="ladder">${LEVELS.map((L, i) => `<div class="step${i <= lv ? " done" : ""}${i === lv ? " now" : ""}"><span class="ic">${L.ic}</span><span class="nm">${L.nm}</span></div>`).join("")}</div>
-      ${nx ? `<div class="next">다음 단계 <b class="disp">${nx.ic} ${nx.nm}</b>까지</div><div class="req">${reqs.map(([t, v, n]) => `<div><span class="ck${v >= n ? " y" : ""}">${v >= n ? "✓" : ""}</span>${t} <span style="color:var(--muted)">(${Math.min(v, n)}/${n})</span></div>`).join("")}</div>` : `<div class="next">가장 높은 단계에 올랐어요!</div>`}
-    </div>
-    <div class="sec"><h3>배지</h3>
-      <div class="medals">${MEDALS.map(M => `<div class="medal${M.ok(s) ? " got" : ""}"><div class="ic">${M.ic}</div><div class="nm">${M.nm}</div>${M.d}</div>`).join("")}</div>
-    </div>
-    <div class="sec"><h3>성장 인증서</h3>
-      ${lv >= 1 ? `<div class="cert">
-        <div class="k">CERTIFICATE</div>
-        <div class="rl"><span>R</span><span>A</span><span>S</span></div>
-        <h2>RAS 성장 인증서</h2>
-        <div class="lv">${LEVELS[lv].ic} ${LEVELS[lv].nm} 단계</div>
-        <p><b>${me.grade}학년 ${me.cls}반 ${me.num}번 ${esc(me.name)}</b></p>
-        <p>위 학생은 스마트폰을 잠시 내려놓고 독서·예술·스포츠 활동을<br>${s.total}번, ${s.days}일 동안 꾸준히 실천하여<br>몸도 마음도 튼튼하게 자랐기에 이 인증서를 드립니다.</p>
-        <p style="font-size:.85rem;color:var(--muted)">R ${s.cnt.R}번 · A ${s.cnt.A}번 · S ${s.cnt.S}번 · 최장 연속 ${s.bestStreak}일</p>
-        <div class="sig">${fmtDate(todayStr())} · RAS 활동 기록장</div>
-      </div>` : `<div class="empty"><div class="disp">🌱 새싹 단계부터 인증서가 열려요</div>기록을 5번 남기면 나만의 성장 인증서를 받을 수 있어요.</div>`}
     </div>`;
   $("calPrev").onclick = () => { calMonth = new Date(y, m - 1, 1); renderGrow(); };
   $("calNext").onclick = () => { calMonth = new Date(y, m + 1, 1); renderGrow(); };
 }
-function renderAll() { if (me) { renderList(); renderGrow(); } }
+function renderAll() { if (me) { renderPeriod(); renderPlan(); renderList(); renderGrow(); } }
 
 /* ---------- 탭 & 로그인 ---------- */
-document.querySelector(".tabs").addEventListener("click", e => {
-  const b = e.target.closest(".tab"); if (!b) return;
-  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t === b));
-  ["write", "list", "grow"].forEach(p => $("pane-" + p).hidden = p !== b.dataset.tab);
-});
+function selectTab(name) {
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t.dataset.tab === name));
+  ["plan", "write", "list", "grow"].forEach(p => $("pane-" + p).hidden = p !== name);
+}
+document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) selectTab(b.dataset.tab); });
 $("loginForm").addEventListener("submit", async e => {
   e.preventDefault();
   const g = +$("lgGrade").value, c = +$("lgClass").value, n = +$("lgNum").value, name = $("lgName").value.trim(), pw = $("lgPw").value.trim();
@@ -589,17 +707,18 @@ $("loginForm").addEventListener("submit", async e => {
   if (pw.length < 4) { $("lgErr").textContent = "비밀번호는 4자리 이상으로 정해 주세요."; return; }
   $("lgErr").textContent = ""; $("lgBtn").disabled = true; $("lgBtn").textContent = "여는 중…";
   try { await login(g, c, n, name, pw); $("lgPw").value = ""; }
-  catch (err) { $("lgErr").textContent = err.code ? "기록장을 열지 못했어요. " + NET_MSG : err.message; }
+  catch (err) { $("lgErr").textContent = err.code ? failMsg(err, "기록장을 열지 못했어요") : err.message; }
   finally { $("lgBtn").disabled = false; $("lgBtn").textContent = "들어가기"; }
 });
 $("logout").addEventListener("click", () => {
   if (token) rpc("logout", { p_token: token }).catch(() => {});
-  ss.set("ras:sess", null); me = null; token = null; records = [];
+  ss.set("ras:sess", null); me = null; token = null; records = []; myGoals = null;
   $("app").hidden = true; $("login").hidden = false; $("loginForm").reset(); $("lgErr").textContent = "";
+  selectTab("write");
 });
 
 /* ---------- 선생님 대시보드 ---------- */
-const T = { grade: 0, cls: 0, students: [], recs: [], sel: null, sort: "num", token: ss.get("ras:tok"), resetAsk: null, loadedAt: null, timer: null };
+const T = { grade: 0, cls: 0, students: [], recs: [], goals: {}, sel: null, sort: "num", token: ss.get("ras:tok"), ask: null, loadedAt: null, timer: null };
 function showTeacher(on) {
   $("teacher").hidden = !on; $("login").hidden = on; $("app").hidden = true;
   document.querySelector(".wrap").classList.toggle("wide", on);
@@ -643,12 +762,17 @@ async function loadClass(g, c, quiet) {
   if (changed) { T.sel = null; T.loadedAt = null; }
   if (!quiet) $("tBody").innerHTML = `<div class="empty" style="margin-top:12px">${g}학년 ${c}반 기록을 불러오는 중…</div>`;
   try {
-    const r = await rpc("class_overview", { p_token: T.token, p_grade: g, p_cls: c });
-    T.students = r.students || []; T.recs = (r.records || []).map(toRec); T.loadedAt = new Date();
+    const [r, gl] = await Promise.all([
+      rpc("class_overview", { p_token: T.token, p_grade: g, p_cls: c }),
+      rpc("class_goals", { p_token: T.token, p_grade: g, p_cls: c }),
+    ]);
+    T.students = r.students || []; T.recs = (r.records || []).map(toRec);
+    T.goals = {}; (gl || []).forEach(x => T.goals[x.sk] = toGoals(x));
+    T.loadedAt = new Date();
     renderTeacher();
   } catch (e) {
     if (e.code === "not_logged_in") { teacherExpired(); return; }
-    if (!quiet) $("tBody").innerHTML = `<div class="empty" style="margin-top:12px"><div class="disp">기록을 불러오지 못했어요</div>${NET_MSG}</div>`;
+    if (!quiet) $("tBody").innerHTML = `<div class="empty" style="margin-top:12px"><div class="disp">기록을 불러오지 못했어요</div>${e.code === "server_not_ready" ? SETUP_MSG : NET_MSG}</div>`;
   }
 }
 function renderTeacher() {
@@ -659,78 +783,85 @@ function renderTeacher() {
     return;
   }
   const byKey = {}; T.recs.forEach(r => (byKey[r.sk] ||= []).push(r));
-  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 6); const wk = ymd(weekAgo);
+  const weekAgo = new Date(todayStr() + "T00:00"); weekAgo.setDate(weekAgo.getDate() - 6); const wk = ymd(weekAgo);
   const rows = T.students.map(st => {
-    const rs = byKey[st.key] || [], s = stats(rs);
-    const last = rs.reduce((m, r) => r.date > m ? r.date : m, "");
-    return { st, rs, s, lv: levelOf(s), last, week: rs.some(r => r.date >= wk) };
+    const rs = byKey[st.key] || [], goal = T.goals[st.key] || null, p = progress(rs, goal);
+    const prs = rs.filter(inPeriod);
+    const last = prs.reduce((m, r) => r.date > m ? r.date : m, "");
+    return { st, rs, goal, p, last, week: prs.some(r => r.date >= wk), total: prs.length };
   });
-  const sorters = { num: (a, b) => a.st.num - b.st.num, total: (a, b) => b.s.total - a.s.total || a.st.num - b.st.num, level: (a, b) => b.lv - a.lv || b.s.total - a.s.total, last: (a, b) => (a.last || "0").localeCompare(b.last || "0") };
+  const sorters = {
+    num: (a, b) => a.st.num - b.st.num,
+    pct: (a, b) => (b.p.pct || 0) - (a.p.pct || 0) || a.st.num - b.st.num,
+    last: (a, b) => (a.last || "0").localeCompare(b.last || "0") || a.st.num - b.st.num,
+  };
   rows.sort(sorters[T.sort]);
-  const cs = stats(T.recs), activeWeek = rows.filter(r => r.week).length;
-  const lvCount = LEVELS.map((_, i) => rows.filter(r => r.lv === i).length);
+  const withGoal = rows.filter(r => r.goal).length, achieved = rows.filter(r => r.p.all).length;
+  const totalRecs = rows.reduce((n, r) => n + r.total, 0);
+  const areaDone = { R: rows.filter(r => r.p.done.R).length, A: rows.filter(r => r.p.done.A).length, S: rows.filter(r => r.p.done.S).length };
+  const noGoal = rows.filter(r => !r.goal).sort((a, b) => a.st.num - b.st.num);
   const quietList = rows.filter(r => !r.week).sort((a, b) => a.st.num - b.st.num);
-  const max = Math.max(1, cs.cnt.R, cs.cnt.A, cs.cnt.S);
-  const lowArea = cs.total ? Object.entries(cs.cnt).sort((a, b) => a[1] - b[1])[0][0] : null;
   const sel = T.sel && rows.find(r => r.st.key === T.sel);
+  const cell = (r, a) => r.goal ? `<td class="g${r.p.done[a] ? " ok" : ""}">${r.p.cnt[a]}/${r.p.goal[a]}</td>` : `<td class="g" style="color:var(--muted)">${r.p.cnt[a]}/-</td>`;
 
   $("tBody").innerHTML = stamp + `
     <div class="stats c4" style="margin-top:12px">
       <div class="stat"><div class="n">${rows.length}</div><div class="t">참여 학생</div></div>
-      <div class="stat"><div class="n">${activeWeek}</div><div class="t">최근 7일 기록한 학생</div></div>
-      <div class="stat"><div class="n">${cs.total}</div><div class="t">반 전체 기록</div></div>
-      <div class="stat"><div class="n">${(cs.total / rows.length).toFixed(1)}</div><div class="t">학생당 평균 기록</div></div>
+      <div class="stat"><div class="n">${withGoal}</div><div class="t">목표 정한 학생</div></div>
+      <div class="stat"><div class="n">${achieved}</div><div class="t">🏆 목표 달성 학생</div></div>
+      <div class="stat"><div class="n">${totalRecs}</div><div class="t">기간 내 반 전체 기록</div></div>
     </div>
-    <div class="sec"><h3>반 전체 R · A · S 균형</h3>
-      <div class="bars">${["R", "A", "S"].map(a => `<div class="bar"><span>${a} ${AREA[a].ko}</span><div class="track"><div class="fill" style="width:${cs.cnt[a] / max * 100}%;background:${AREA[a].c}"></div></div><span class="v">${cs.cnt[a]}</span></div>`).join("")}</div>
-      ${lowArea ? `<div class="msg">우리 반은 <b>${AREA[lowArea].ko}</b> 활동이 가장 적어요. ${lowArea === "R" ? "아침 독서나 학급 문고를 권해 보세요." : lowArea === "A" ? "쉬는 시간 그리기·만들기 활동을 열어 보세요." : "점심 시간 운동장 놀이를 권해 보세요."}</div>` : ""}
+
+    <div class="sec"><h3>영역별 목표 달성 학생</h3>
+      <div class="bars">${["R", "A", "S"].map(a => `<div class="bar"><span>${a} ${AREA[a].ko}</span><div class="track"><div class="fill" style="width:${areaDone[a] / Math.max(1, withGoal) * 100}%;background:${AREA[a].c}"></div></div><span class="v">${areaDone[a]}명</span></div>`).join("")}</div>
+      <p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">막대 길이는 목표를 정한 학생 ${withGoal}명 기준이에요.</p>
     </div>
-    <div class="sec"><h3>성장 단계 분포</h3>
-      <div class="lvcount">${LEVELS.map((L, i) => `<div class="step${lvCount[i] ? " done" : ""}"><span class="ic">${L.ic}</span><span class="nm">${L.nm}</span><span class="cnt">${lvCount[i]}명</span></div>`).join("")}</div>
+
+    <div class="sec"><h3>목표를 아직 정하지 않은 학생 · ${noGoal.length}명</h3>
+      ${noGoal.length ? `<div class="quiet">${noGoal.map(r => `<span>${r.st.num}번 ${esc(r.st.name)}</span>`).join("")}</div>` : `<div class="msg">모든 학생이 목표를 정했어요!</div>`}
     </div>
+
     <div class="sec"><h3>최근 7일 기록이 없는 학생 · ${quietList.length}명</h3>
       ${quietList.length ? `<div class="quiet">${quietList.map(r => `<span>${r.st.num}번 ${esc(r.st.name)}</span>`).join("")}</div>` : `<div class="msg">모든 학생이 이번 주에 기록을 남겼어요!</div>`}
     </div>
-    <div class="sec"><h3>학생별 기록</h3>
-      <div class="sorts" id="tSort">${[["num", "번호순"], ["total", "기록 많은 순"], ["level", "단계 높은 순"], ["last", "오래 쉰 순"]].map(([k, t]) => `<button type="button" class="chip" data-v="${k}" aria-pressed="${T.sort === k}">${t}</button>`).join("")}</div>
+
+    <div class="sec"><h3>학생별 목표 달성 현황</h3>
+      <div class="sorts" id="tSort">${[["num", "번호순"], ["pct", "달성률 높은 순"], ["last", "오래 쉰 순"]].map(([k, t]) => `<button type="button" class="chip" data-v="${k}" aria-pressed="${T.sort === k}">${t}</button>`).join("")}</div>
       <div class="tscroll"><table class="cls">
-        <thead><tr><th>번호</th><th style="text-align:left">이름</th><th>단계</th><th>R</th><th>A</th><th>S</th><th>균형</th><th>합계</th><th>활동일</th><th>최근 기록</th></tr></thead>
-        <tbody>${rows.map(r => {
-          const t = Math.max(1, r.s.total);
-          return `<tr data-k="${esc(r.st.key)}" class="${T.sel === r.st.key ? "sel" : ""}" tabindex="0">
-            <td>${r.st.num}</td><td class="nm">${esc(r.st.name)}</td><td>${LEVELS[r.lv].ic} ${LEVELS[r.lv].nm}</td>
-            <td>${r.s.cnt.R}</td><td>${r.s.cnt.A}</td><td>${r.s.cnt.S}</td>
-            <td><span class="mini">${["R", "A", "S"].map(a => `<i style="width:${r.s.cnt[a] / t * 100}%;background:${AREA[a].c}"></i>`).join("")}</span></td>
-            <td><b>${r.s.total}</b></td><td>${r.s.days}</td>
-            <td class="${r.week ? "" : "old"}">${r.last ? fmtDate(r.last) : "없음"}</td></tr>`;
-        }).join("")}</tbody>
+        <thead><tr><th>번호</th><th style="text-align:left">이름</th><th>R 독서</th><th>A 예술</th><th>S 스포츠</th><th>달성률</th><th>나만의 목표</th><th>최근 기록</th></tr></thead>
+        <tbody>${rows.map(r => `<tr data-k="${esc(r.st.key)}" class="${T.sel === r.st.key ? "sel" : ""}" tabindex="0">
+            <td>${r.st.num}</td><td class="nm">${esc(r.st.name)}</td>
+            ${cell(r, "R")}${cell(r, "A")}${cell(r, "S")}
+            <td>${r.goal ? Math.round(r.p.pct * 100) + "%" : `<span style="color:var(--muted)">목표 없음</span>`}</td>
+            <td>${r.p.all ? "🏆 달성" : r.goal ? `${r.p.nDone}/3` : "-"}</td>
+            <td class="${r.week ? "" : "old"}">${r.last ? fmtDate(r.last) : "없음"}</td></tr>`).join("")}</tbody>
       </table></div>
-      <p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">학생 줄을 누르면 그 학생의 기록을 자세히 볼 수 있어요.</p>
+      <p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">칸의 숫자는 ‘한 횟수/목표 횟수’예요. 학생 줄을 누르면 기록을 자세히 볼 수 있어요.</p>
       ${sel ? `<div class="tdetail">
-        <div class="hd"><h3 style="margin:0">${sel.st.num}번 ${esc(sel.st.name)} · ${LEVELS[sel.lv].ic} ${LEVELS[sel.lv].nm} · 연속 ${sel.s.curStreak}일 · 평균 기분 ${sel.s.total ? MOOD[Math.round(sel.s.mood)] : "-"}</h3><span style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">${T.resetAsk === sel.st.key
-          ? `<span style="font-size:.85rem">비밀번호를 초기화할까요?</span><button class="tlink" type="button" id="tResetYes" style="color:var(--a)">초기화</button><button class="tlink" type="button" id="tResetNo">취소</button>`
-          : sel.st.hasPw ? `<button class="tlink" type="button" id="tReset">비밀번호 초기화</button>` : `<span style="font-size:.85rem;color:var(--muted)">비밀번호 초기화됨</span>`}<button class="tlink" type="button" id="tClose">닫기</button></span></div>
+        <div class="hd"><h3 style="margin:0">${sel.st.num}번 ${esc(sel.st.name)} · ${sel.p.all ? "🏆 나만의 목표 달성" : sel.goal ? `목표 ${sel.p.nDone}/3 달성` : "목표 없음"}</h3>
+          <span style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">${
+            T.ask === "pw" ? `<span style="font-size:.85rem">비밀번호를 초기화할까요?</span><button class="tlink" type="button" id="tPwYes" style="color:var(--a)">초기화</button><button class="tlink" type="button" id="tNo">취소</button>`
+            : sel.st.hasPw ? `<button class="tlink" type="button" id="tPwAsk">비밀번호 초기화</button>` : `<span style="font-size:.85rem;color:var(--muted)">비밀번호 초기화됨</span>`
+          }<button class="tlink" type="button" id="tClose">닫기</button></span></div>
         <div class="list">${sel.rs.length ? sorted(sel.rs).map(r => recHtml(r, false)).join("") : `<div class="empty">아직 남긴 기록이 없어요.</div>`}</div>
       </div>` : ""}
     </div>`;
 }
 $("tBody").addEventListener("click", async e => {
   const sb = e.target.closest("#tSort button"); if (sb) { T.sort = sb.dataset.v; renderTeacher(); return; }
-  if (e.target.id === "tRefresh") { loadClass(T.grade, T.cls, true); return; }
-  if (e.target.id === "tClose") { T.sel = null; T.resetAsk = null; renderTeacher(); return; }
-  if (e.target.id === "tReset") { T.resetAsk = T.sel; renderTeacher(); return; }
-  if (e.target.id === "tResetNo") { T.resetAsk = null; renderTeacher(); return; }
-  if (e.target.id === "tResetYes") {
-    const key = T.resetAsk; T.resetAsk = null;
-    try {
-      await rpc("reset_student_pw", { p_token: T.token, p_key: key });
-      toast("초기화했어요. 학생이 다음에 들어올 때 새 비밀번호를 정해요.");
-      loadClass(T.grade, T.cls, true);
-    } catch (err) { if (err.code === "not_logged_in") teacherExpired(); else { toast("초기화하지 못했어요. " + NET_MSG); renderTeacher(); } }
+  const id = e.target.id;
+  if (id === "tRefresh") { loadClass(T.grade, T.cls, true); return; }
+  if (id === "tClose") { T.sel = null; T.ask = null; renderTeacher(); return; }
+  if (id === "tPwAsk") { T.ask = "pw"; renderTeacher(); return; }
+  if (id === "tNo") { T.ask = null; renderTeacher(); return; }
+  if (id === "tPwYes") {
+    const key = T.sel; T.ask = null;
+    try { await rpc("reset_student_pw", { p_token: T.token, p_key: key }); toast("초기화했어요. 학생이 다음에 들어올 때 새 비밀번호를 정해요."); loadClass(T.grade, T.cls, true); }
+    catch (err) { if (err.code === "not_logged_in") teacherExpired(); else { toast(failMsg(err, "처리하지 못했어요")); renderTeacher(); } }
     return;
   }
   const tr = e.target.closest("tr[data-k]");
-  if (tr) { T.sel = T.sel === tr.dataset.k ? null : tr.dataset.k; T.resetAsk = null; renderTeacher(); $("tBody").querySelector(".tdetail")?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+  if (tr) { T.sel = T.sel === tr.dataset.k ? null : tr.dataset.k; T.ask = null; renderTeacher(); $("tBody").querySelector(".tdetail")?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
 });
 $("tBody").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("tr[data-k]")) e.target.click(); });
 
