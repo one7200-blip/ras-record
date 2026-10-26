@@ -242,6 +242,14 @@ table.cls td.g.ok { color: var(--s); font-weight: 700; }
 .hrow .hl { display: grid; grid-template-columns: 18px 1fr auto; gap: 6px; }
 .certs { display: grid; gap: 14px; }
 .rbadge { display: inline-block; font-family: var(--display); font-size: .82rem; background: var(--teal); color: #fff; border-radius: 99px; padding: 1px 9px; }
+/* Teacher viewing a student's screen */
+.viewbtn { background: #fff; border: 1.5px solid var(--teal); color: var(--teal-dk); border-radius: 99px; padding: 3px 10px; font-size: .82rem; white-space: nowrap; }
+.viewbtn:hover { background: #e3f4f5; }
+.viewbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--ink); color: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 14px; font-size: .92rem; }
+.viewbar .ghost { color: #fff; border-color: rgba(255,255,255,.5); }
+.viewbar .ghost:hover { color: #fff; border-color: #fff; }
+#app.viewing #tab-write, #app.viewing #logout, #app.viewing .goal button, #app.viewing #pSave { display: none; }
+#app.viewing .tabs { grid-template-columns: repeat(3, 1fr); }
 .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 99px; font-size: .95rem; z-index: 9; }
 @media (max-width: 420px) {
   .areas .hint { display: none; }
@@ -311,6 +319,7 @@ body{margin:0}
 
     <!-- APP -->
     <section id="app" hidden>
+      <div class="viewbar" id="viewBar" hidden><span>👀 <b>선생님 보기</b> · <span id="viewWho"></span> 학생 화면이에요. 보기만 할 수 있어요.</span><button class="ghost" id="viewBack" type="button">← 대시보드로 돌아가기</button></div>
       <div class="hello">
         <div class="who" id="who"></div>
         <span style="display:flex;gap:6px;flex-wrap:wrap"><button class="ghost" id="logout" type="button">다른 친구로 바꾸기</button></span>
@@ -423,7 +432,7 @@ const ss = {
   set(k, v) { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
 };
 const NET_MSG = "인터넷 연결을 확인한 뒤 다시 시도해 주세요.";
-const SETUP_MSG = "서버 설정(update-goals.sql)이 아직 적용되지 않았어요. 선생님께 알려 주세요.";
+const SETUP_MSG = "서버 설정(SQL)이 아직 적용되지 않았어요. 선생님께 알려 주세요.";
 const failMsg = (e, what) => e?.code === "server_not_ready" ? SETUP_MSG : `${what}. ${NET_MSG}`;
 
 const AREA = { R: { ko: "독서", c: "var(--r)" }, A: { ko: "예술문화", c: "var(--a)" }, S: { ko: "스포츠", c: "var(--s)" } };
@@ -455,6 +464,7 @@ const periodOpen = () => todayStr() <= END;
 function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2800); }
 
 let me = null, token = null, records = [], myGoals = null, filter = "all", calMonth = null, pendingDelete = null;
+let viewAs = false, viewStash = null;   // 선생님이 학생 화면을 보는 중인지
 
 /* ---------- 나만의 목표 달성 계산 (도전 기간 안의 기록만 셈) ---------- */
 const toGoals = g => g ? { R: g.r_goal, A: g.a_goal, S: g.s_goal } : null;
@@ -524,7 +534,7 @@ function renderPlan() {
   document.querySelectorAll(".goal button").forEach(b => b.hidden = !open);
   $("pSave").hidden = !open;
   $("pSave").textContent = myGoals ? "목표 바꿔서 저장하기" : "목표 저장하기";
-  $("planNote").innerHTML = !open ? "도전 기간이 끝나서 목표를 바꿀 수 없어요."
+  $("planNote").innerHTML = viewAs ? (myGoals ? "학생이 정한 목표예요." : "이 학생은 아직 목표를 정하지 않았어요.") : !open ? "도전 기간이 끝나서 목표를 바꿀 수 없어요."
     : myGoals ? "목표는 11월 30일까지 언제든 바꿀 수 있어요. 너무 쉬운 목표보다 조금 노력하면 닿을 목표가 좋아요!"
     : "−, + 버튼으로 횟수를 고른 뒤 <b>목표 저장하기</b>를 눌러요.";
 }
@@ -598,7 +608,7 @@ function recHtml(r, withTools) {
         <div class="meta"><span>${fmtDate(r.date)}</span><span>· ${SLOT[r.slot] || ""}</span><span>· ${AREA[r.area].ko}</span><span>${MOOD[r.mood] || ""}</span>${inPeriod(r) ? "" : `<span>· 도전 기간 밖</span>`}</div>
         <div class="act">${esc(r.activity)}</div>
         <div class="feel">${esc(r.feeling)}</div>
-        ${withTools ? `<div class="tools">${pendingDelete === r.id
+        ${withTools && !viewAs ? `<div class="tools">${pendingDelete === r.id
           ? `<span style="font-size:.8rem">정말 지울까요?</span><button class="yes" data-del="${r.id}">지우기</button><button data-cancel>그대로 두기</button>`
           : `<button data-ask="${r.id}">지우기</button>`}</div>` : ""}
       </div>
@@ -718,7 +728,7 @@ $("logout").addEventListener("click", () => {
 });
 
 /* ---------- 선생님 대시보드 ---------- */
-const T = { grade: 0, cls: 0, students: [], recs: [], goals: {}, sel: null, sort: "num", token: ss.get("ras:tok"), ask: null, loadedAt: null, timer: null };
+const T = { grade: 0, cls: 0, students: [], recs: [], goals: {}, rows: [], sel: null, sort: "num", token: ss.get("ras:tok"), ask: null, loadedAt: null, timer: null };
 function showTeacher(on) {
   $("teacher").hidden = !on; $("login").hidden = on; $("app").hidden = true;
   document.querySelector(".wrap").classList.toggle("wide", on);
@@ -790,6 +800,7 @@ function renderTeacher() {
     const last = prs.reduce((m, r) => r.date > m ? r.date : m, "");
     return { st, rs, goal, p, last, week: prs.some(r => r.date >= wk), total: prs.length };
   });
+  T.rows = rows;
   const sorters = {
     num: (a, b) => a.st.num - b.st.num,
     pct: (a, b) => (b.p.pct || 0) - (a.p.pct || 0) || a.st.num - b.st.num,
@@ -828,13 +839,14 @@ function renderTeacher() {
     <div class="sec"><h3>학생별 목표 달성 현황</h3>
       <div class="sorts" id="tSort">${[["num", "번호순"], ["pct", "달성률 높은 순"], ["last", "오래 쉰 순"]].map(([k, t]) => `<button type="button" class="chip" data-v="${k}" aria-pressed="${T.sort === k}">${t}</button>`).join("")}</div>
       <div class="tscroll"><table class="cls">
-        <thead><tr><th>번호</th><th style="text-align:left">이름</th><th>R 독서</th><th>A 예술</th><th>S 스포츠</th><th>달성률</th><th>나만의 목표</th><th>최근 기록</th></tr></thead>
+        <thead><tr><th>번호</th><th style="text-align:left">이름</th><th>R 독서</th><th>A 예술</th><th>S 스포츠</th><th>달성률</th><th>나만의 목표</th><th>최근 기록</th><th>학생 화면</th></tr></thead>
         <tbody>${rows.map(r => `<tr data-k="${esc(r.st.key)}" class="${T.sel === r.st.key ? "sel" : ""}" tabindex="0">
             <td>${r.st.num}</td><td class="nm">${esc(r.st.name)}</td>
             ${cell(r, "R")}${cell(r, "A")}${cell(r, "S")}
             <td>${r.goal ? Math.round(r.p.pct * 100) + "%" : `<span style="color:var(--muted)">목표 없음</span>`}</td>
             <td>${r.p.all ? "🏆 달성" : r.goal ? `${r.p.nDone}/3` : "-"}</td>
-            <td class="${r.week ? "" : "old"}">${r.last ? fmtDate(r.last) : "없음"}</td></tr>`).join("")}</tbody>
+            <td class="${r.week ? "" : "old"}">${r.last ? fmtDate(r.last) : "없음"}</td>
+            <td><button type="button" class="viewbtn" data-view="${esc(r.st.key)}">👀 보기</button></td></tr>`).join("")}</tbody>
       </table></div>
       <p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">칸의 숫자는 ‘한 횟수/목표 횟수’예요. 학생 줄을 누르면 기록을 자세히 볼 수 있어요.</p>
       ${sel ? `<div class="tdetail">
@@ -843,12 +855,15 @@ function renderTeacher() {
             T.ask === "pw" ? `<span style="font-size:.85rem">비밀번호를 초기화할까요?</span><button class="tlink" type="button" id="tPwYes" style="color:var(--a)">초기화</button><button class="tlink" type="button" id="tNo">취소</button>`
             : sel.st.hasPw ? `<button class="tlink" type="button" id="tPwAsk">비밀번호 초기화</button>` : `<span style="font-size:.85rem;color:var(--muted)">비밀번호 초기화됨</span>`
           }<button class="tlink" type="button" id="tClose">닫기</button></span></div>
+        <button type="button" class="cta" data-view="${esc(sel.st.key)}" style="margin-bottom:12px">👀 ${esc(sel.st.name)} 학생 화면으로 보기</button>
         <div class="list">${sel.rs.length ? sorted(sel.rs).map(r => recHtml(r, false)).join("") : `<div class="empty">아직 남긴 기록이 없어요.</div>`}</div>
       </div>` : ""}
     </div>`;
 }
 $("tBody").addEventListener("click", async e => {
   const sb = e.target.closest("#tSort button"); if (sb) { T.sort = sb.dataset.v; renderTeacher(); return; }
+  const vb = e.target.closest("button[data-view]");
+  if (vb) { const row = T.rows.find(r => r.st.key === vb.dataset.view); if (row) openStudentView(row); return; }
   const id = e.target.id;
   if (id === "tRefresh") { loadClass(T.grade, T.cls, true); return; }
   if (id === "tClose") { T.sel = null; T.ask = null; renderTeacher(); return; }
@@ -863,6 +878,31 @@ $("tBody").addEventListener("click", async e => {
   const tr = e.target.closest("tr[data-k]");
   if (tr) { T.sel = T.sel === tr.dataset.k ? null : tr.dataset.k; T.ask = null; renderTeacher(); $("tBody").querySelector(".tdetail")?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
 });
+/* 선생님이 학생 화면 보기 (이미 불러온 반 데이터로 그려서 읽기만 가능) */
+function openStudentView(row) {
+  viewStash = { me, token, records, myGoals, filter };
+  viewAs = true;
+  me = { key: row.st.key, grade: row.st.grade, cls: row.st.cls, num: row.st.num, name: row.st.name };
+  token = null; records = row.rs.slice(); myGoals = row.goal; filter = "all"; calMonth = null; pendingDelete = null;
+  showTeacher(false);
+  $("login").hidden = true; $("app").hidden = false; $("app").classList.add("viewing"); $("viewBar").hidden = false;
+  $("viewWho").textContent = `${me.grade}학년 ${me.cls}반 ${me.num}번 ${me.name}`;
+  $("who").innerHTML = `${esc(me.name)}<small>${me.grade}학년 ${me.cls}반 ${me.num}번</small>`;
+  $("lFilter").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === "all"));
+  renderAll(); selectTab("grow"); window.scrollTo(0, 0);
+}
+function closeStudentView() {
+  if (!viewAs) return;
+  viewAs = false; $("app").classList.remove("viewing"); $("viewBar").hidden = true;
+  ({ me, token, records, myGoals, filter } = viewStash); viewStash = null; calMonth = null;
+  $("app").hidden = true;
+  if (me) { $("who").innerHTML = `${esc(me.name)}<small>${me.grade}학년 ${me.cls}반 ${me.num}번</small>`; renderAll(); }
+  selectTab("write");
+  openTeacher();
+  setTimeout(() => $("tBody").querySelector(".tdetail")?.scrollIntoView({ block: "nearest" }), 50);
+}
+$("viewBack").addEventListener("click", closeStudentView);
+
 $("tBody").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("tr[data-k]")) e.target.click(); });
 
 /* ---------- 시작 ---------- */
