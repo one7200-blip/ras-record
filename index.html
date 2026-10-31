@@ -121,7 +121,7 @@ textarea.in { resize: vertical; min-height: 78px; }
 .sec { margin-top: 24px; }
 .sec h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--teal-dk); }
 .bars { display: grid; gap: 10px; }
-.bar { display: grid; grid-template-columns: 72px 1fr 40px; gap: 10px; align-items: center; font-size: .9rem; }
+.bar { display: grid; grid-template-columns: 100px 1fr 40px; gap: 10px; align-items: center; font-size: .9rem; }
 .bar .track { height: 18px; background: #f2ece2; border-radius: 99px; overflow: hidden; }
 .bar .fill { height: 100%; border-radius: 99px; transition: width .5s; }
 .bar .v { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--display); }
@@ -254,7 +254,7 @@ table.cls td.g.ok { color: var(--s); font-weight: 700; }
 @media (max-width: 420px) {
   .areas .hint { display: none; }
   .ladder .step { font-size: .7rem; }
-  .bar { grid-template-columns: 60px 1fr 34px; }
+  .bar { grid-template-columns: 88px 1fr 34px; }
 }
 @media (prefers-reduced-motion: reduce) { .bar .fill { transition: none; } }
 [hidden]{display:none!important}
@@ -362,6 +362,7 @@ body{margin:0}
         <div>
           <span class="lbl">언제 했나요?</span>
           <div class="chips" id="wSlot">
+            <button type="button" class="chip" data-v="morning" aria-pressed="false">아침 활동 시간</button>
             <button type="button" class="chip" data-v="break" aria-pressed="false">쉬는 시간</button>
             <button type="button" class="chip" data-v="kicle" aria-pressed="false">키클 타임</button>
             <button type="button" class="chip" data-v="lunch" aria-pressed="false">점심 시간</button>
@@ -436,7 +437,7 @@ const SETUP_MSG = "서버 설정(SQL)이 아직 적용되지 않았어요. 선�
 const failMsg = (e, what) => e?.code === "server_not_ready" ? SETUP_MSG : `${what}. ${NET_MSG}`;
 
 const AREA = { R: { ko: "독서", c: "var(--r)" }, A: { ko: "예술문화", c: "var(--a)" }, S: { ko: "스포츠", c: "var(--s)" } };
-const SLOT = { break: "쉬는 시간", kicle: "키클 타임", lunch: "점심 시간", etc: "그 밖에" };
+const SLOT = { morning: "아침 활동 시간", break: "쉬는 시간", kicle: "키클 타임", lunch: "점심 시간", etc: "그 밖에" };
 const MOOD = { 5: "😆", 4: "🙂", 3: "😐", 2: "😕", 1: "😣" };
 /* 배지: s = 기간 안 기록 통계, p = 나만의 목표 달성 정보 */
 const MEDALS = [
@@ -632,7 +633,7 @@ $("list").addEventListener("click", async e => {
 
 /* ---------- 달성 현황 ---------- */
 function stats(rs) {
-  const cnt = { R: 0, A: 0, S: 0 }, slot = { break: 0, kicle: 0, lunch: 0, etc: 0 };
+  const cnt = { R: 0, A: 0, S: 0 }, slot = { morning: 0, break: 0, kicle: 0, lunch: 0, etc: 0 };
   let moodSum = 0, longFeel = 0;
   const days = new Set();
   rs.forEach(r => { cnt[r.area] = (cnt[r.area] || 0) + 1; slot[r.slot] = (slot[r.slot] || 0) + 1; moodSum += r.mood || 3; days.add(r.date); if ((r.feeling || "").length >= 50) longFeel++; });
