@@ -242,6 +242,24 @@ table.cls td.g.ok { color: var(--s); font-weight: 700; }
 .hrow .hl { display: grid; grid-template-columns: 18px 1fr auto; gap: 6px; }
 .certs { display: grid; gap: 14px; }
 .rbadge { display: inline-block; font-family: var(--display); font-size: .82rem; background: var(--teal); color: #fff; border-radius: 99px; padding: 1px 9px; }
+/* My records grouped by area */
+#list { display: grid; gap: 18px; }
+.grp { border-radius: 18px; padding: 12px; display: grid; gap: 10px; }
+.grp.R { background: var(--r-bg); } .grp.A { background: var(--a-bg); } .grp.S { background: var(--s-bg); }
+.grp-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.grp-head .big { font-family: var(--display); font-size: 2rem; line-height: 1; }
+.grp.R .big, .grp.R .grp-title b { color: var(--r); } .grp.A .big, .grp.A .grp-title b { color: var(--a); } .grp.S .big, .grp.S .grp-title b { color: var(--s); }
+.grp-title { display: grid; flex: 1; min-width: 0; }
+.grp-title b { font-size: 1.2rem; }
+.grp-title small { font-size: .78rem; color: var(--muted); }
+.grp-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.grp-cnt, .grp-goal { background: #fff; border-radius: 99px; padding: 2px 10px; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.grp-goal.ok { background: var(--gold); color: #4a3505; font-weight: 700; }
+.grp .rec { border-color: transparent; }
+.grp .rec .badge { width: 36px; height: 36px; font-size: 1.2rem; border-radius: 10px; }
+.grp .rec { grid-template-columns: 36px 1fr; }
+.grp-empty { background: rgba(255,255,255,.7); border-radius: 12px; padding: 14px; text-align: center; font-size: .9rem; color: var(--muted); }
+
 /* Teacher viewing a student's screen */
 .viewbtn { background: #fff; border: 1.5px solid var(--teal); color: var(--teal-dk); border-radius: 99px; padding: 3px 10px; font-size: .82rem; white-space: nowrap; }
 .viewbtn:hover { background: #e3f4f5; }
@@ -615,10 +633,24 @@ function recHtml(r, withTools) {
       </div>
     </article>`;
 }
+/* 내 기록: 독서 · 예술문화 · 스포츠 묶음으로 보여 줌 */
+const AREA_HINT = { R: "책을 읽고 생각을 나눠요", A: "그리고 만들고 연주해요", S: "뛰고 놀며 건강해져요" };
 function renderList() {
-  const rows = sorted(records).filter(r => filter === "all" || r.area === filter);
-  $("list").innerHTML = rows.length ? rows.map(r => recHtml(r, true)).join("")
-    : `<div class="empty"><div class="disp">${records.length ? "이 영역 기록이 아직 없어요" : "첫 기록을 남겨 볼까요?"}</div>‘기록하기’에서 오늘 한 R·A·S 활동을 적으면 여기에 쌓여요.</div>`;
+  if (!records.length) {
+    $("list").innerHTML = `<div class="empty"><div class="disp">첫 기록을 남겨 볼까요?</div>‘기록하기’에서 오늘 한 R·A·S 활동을 적으면 여기에 쌓여요.</div>`;
+    return;
+  }
+  const p = progress(records, myGoals);
+  $("list").innerHTML = ["R", "A", "S"].filter(a => filter === "all" || filter === a).map(a => {
+    const rs = sorted(records).filter(r => r.area === a);
+    const goal = p.goal ? `<span class="grp-goal${p.done[a] ? " ok" : ""}">${p.done[a] ? "🎉 " : ""}목표 ${p.cnt[a]}/${p.goal[a]}번</span>` : "";
+    return `<section class="grp ${a}">
+      <div class="grp-head"><span class="big">${a}</span><div class="grp-title"><b class="disp">${AREA[a].ko}</b><small>${AREA_HINT[a]}</small></div>
+        <div class="grp-meta"><span class="grp-cnt">${rs.length}개</span>${goal}</div></div>
+      <div class="list">${rs.length ? rs.map(r => recHtml(r, true)).join("")
+        : `<div class="grp-empty">아직 ${AREA[a].ko} 기록이 없어요.${viewAs ? "" : " ‘기록하기’에서 남겨 봐요!"}</div>`}</div>
+    </section>`;
+  }).join("");
 }
 $("list").addEventListener("click", async e => {
   const t = e.target;
